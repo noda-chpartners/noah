@@ -1,0 +1,123 @@
+---
+import { SITE_INFO, COMPANY_INFO } from "../constants/site";
+
+const rows = [
+  { label: "会社名", value: SITE_INFO.title },
+  { label: "代表者", value: COMPANY_INFO.president },
+  { label: "所在地", value: `${COMPANY_INFO.postalCode}\n${COMPANY_INFO.address}` },
+  { label: "TEL", value: COMPANY_INFO.tel, href: `tel:${COMPANY_INFO.telLink}` },
+];
+---
+
+<section class="section company" id="company">
+  <div class="section__inner">
+    <header class="ed-head">
+      <p class="ed-label">( Overview )</p>
+      <h2 class="ed-title js-shuffle" data-shuffle="view">Company</h2>
+    </header>
+
+    <div class="company__layout">
+      <p class="company__lead">
+        挑戦する人を、<br />未来へ運ぶ。
+      </p>
+
+      <dl class="company__list">
+        {
+          rows.map((row) => (
+            <div class="company__row">
+              <dt class="company__label ed-label">( {row.label} )</dt>
+              <dd class="company__value">
+                {row.href ? (
+                  <a class="link" href={row.href}>
+                    {row.value}
+                  </a>
+                ) : (
+                  row.value
+                )}
+              </dd>
+            </div>
+          ))
+        }
+        <div class="company__row">
+          <dt class="company__label ed-label">( 事業内容 )</dt>
+          <dd class="company__value">
+            <ul class="company__business">
+              {
+                COMPANY_INFO.business.map((item, index) => (
+                  <li class="company__business_item">
+                    <span class="ed-label">{String(index + 1).padStart(2, "0")}</span>
+                    {item.name}
+                  </li>
+                ))
+              }
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .company {
+    border-top: 1px solid $c-line;
+
+    &__layout {
+      display: grid;
+      gap: 56px;
+
+      @include pc {
+        grid-template-columns: 5fr 7fr;
+        gap: 80px;
+        align-content: start;
+        align-items: start;
+      }
+    }
+
+    &__lead {
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      line-height: 1.8;
+    }
+
+    &__row {
+      display: grid;
+      gap: 10px;
+      padding: 26px 0;
+      border-top: 1px solid $c-line;
+
+      @include tab {
+        grid-template-columns: 160px 1fr;
+        gap: 32px;
+        padding: 30px 0;
+      }
+
+      &:last-child {
+        border-bottom: 1px solid $c-line;
+      }
+    }
+
+    &__label {
+      padding-top: 2px;
+    }
+
+    &__value {
+      white-space: pre-line;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      line-height: 1.9;
+    }
+
+    &__business {
+      display: grid;
+      gap: 10px;
+    }
+
+    &__business_item {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+    }
+  }
+</style>

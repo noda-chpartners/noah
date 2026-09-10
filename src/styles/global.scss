@@ -1,0 +1,189 @@
+html {
+  scroll-behavior: auto;
+  scroll-padding-top: 80px;
+}
+
+html.is-awaiting-loader,
+html.is-awaiting-loader body {
+  overflow: hidden;
+}
+
+body {
+  background-color: $c-white;
+  color: $c-base;
+  font-family: $font-base;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.is-nav-open {
+  overflow: hidden;
+}
+
+::selection {
+  background-color: $c-base;
+  color: $c-white;
+}
+
+.link {
+  display: inline-block;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.section {
+  padding: 80px 6%;
+
+  @include tab {
+    padding: 120px 5%;
+  }
+
+  @include pc {
+    padding: 140px 4%;
+  }
+
+  &__inner {
+    max-width: 1120px;
+    margin-inline: auto;
+  }
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 56px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $c-line;
+
+    @include tab {
+      margin-bottom: 80px;
+    }
+  }
+
+  &__index {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    opacity: 0.38;
+  }
+
+  &__title {
+    margin-bottom: 48px;
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1.2;
+    text-transform: uppercase;
+
+    @include tab {
+      margin-bottom: 72px;
+    }
+  }
+
+  &__head &__title {
+    margin-bottom: 0;
+  }
+}
+
+.section--dark .section__head {
+  border-bottom-color: $c-line-light;
+}
+
+.section--dark .section__title,
+.section--dark .section__index {
+  color: $c-white;
+}
+
+// エディトリアル系（SERVICE 以降）
+.ed-head {
+  margin-bottom: 72px;
+
+  @include tab {
+    margin-bottom: 104px;
+  }
+}
+
+.ed-label {
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: $c-muted;
+}
+
+.ed-title {
+  margin-top: 16px;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  font-weight: 300;
+  letter-spacing: 0.28em;
+  line-height: 1.1;
+  text-indent: 0.1em;
+
+  @include tab {
+    letter-spacing: 0.48em;
+  }
+}
+
+.ed-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-width: 240px;
+  padding: 18px 36px;
+  border: 1px solid currentColor;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: background-color 0.35s ease, color 0.35s ease;
+
+  &:hover {
+    background-color: $c-base;
+    color: $c-white;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.page {
+  min-height: 100dvh;
+  padding-top: 120px;
+
+  @include tab {
+    padding-top: 160px;
+  }
+
+  @include pc {
+    padding-top: 180px;
+  }
+}
+
+.ed-textlink {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.55;
+  }
+}

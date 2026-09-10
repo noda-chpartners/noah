@@ -1,0 +1,143 @@
+---
+import { ABOUT } from "../data/content";
+import { COMPANY_INFO } from "../constants/site";
+import SectionHead from "./SectionHead.astro";
+
+const sideItems = [ABOUT.mission, ABOUT.value];
+---
+
+<section class="section about" id="about">
+  <div class="section__inner">
+    <SectionHead title="ABOUT" index="01" />
+
+    <article class="about__vision">
+      <p class="about__label js-shuffle" data-shuffle="view">{ABOUT.vision.title}</p>
+      <h3 class="about__quote">{ABOUT.vision.subtitle}</h3>
+      <p class="about__lead">{ABOUT.vision.text}</p>
+    </article>
+
+    <div class="about__pair">
+      {
+        sideItems.map((item) => (
+          <article class="about__block">
+            <p class="about__label js-shuffle" data-shuffle="view">
+              {item.title}
+            </p>
+            <h3 class="about__heading">{item.subtitle}</h3>
+            <p class="about__text">{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <article class="about__greeting">
+      <div class="about__greeting_meta">
+        <p class="about__label js-shuffle" data-shuffle="view">
+          {ABOUT.greeting.title}
+        </p>
+        <p class="about__role">{ABOUT.greeting.role}</p>
+        <p class="about__name">{COMPANY_INFO.president}</p>
+      </div>
+      <p class="about__greeting_text">{ABOUT.greeting.text}</p>
+    </article>
+  </div>
+</section>
+
+<style lang="scss">
+  .about {
+    &__vision {
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid $c-line;
+
+      @include tab {
+        margin-bottom: 96px;
+        padding-bottom: 96px;
+      }
+    }
+
+    &__label {
+      margin-bottom: 16px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+    }
+
+    &__quote {
+      max-width: 14em;
+      margin-bottom: 28px;
+      font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.55;
+      letter-spacing: 0.08em;
+    }
+
+    &__lead {
+      max-width: 38em;
+      color: $c-muted;
+      font-size: 0.95rem;
+      line-height: 2;
+    }
+
+    &__pair {
+      display: grid;
+      gap: 48px;
+      margin-bottom: 72px;
+
+      @include tab {
+        grid-template-columns: 1fr 1fr;
+        gap: 64px 80px;
+        margin-bottom: 96px;
+      }
+    }
+
+    &__heading {
+      margin-bottom: 16px;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.7;
+      letter-spacing: 0.06em;
+    }
+
+    &__text {
+      color: $c-muted;
+      font-size: 0.875rem;
+      line-height: 1.9;
+    }
+
+    &__greeting {
+      display: grid;
+      gap: 32px;
+      padding-top: 56px;
+      border-top: 1px solid $c-line;
+
+      @include tab {
+        grid-template-columns: 280px 1fr;
+        gap: 64px;
+        padding-top: 80px;
+        align-items: start;
+      }
+    }
+
+    &__role {
+      margin-bottom: 8px;
+      color: $c-muted;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+    }
+
+    &__name {
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+    }
+
+    &__greeting_text {
+      max-width: 42em;
+      white-space: pre-line;
+      font-size: 0.95rem;
+      line-height: 2;
+    }
+  }
+</style>

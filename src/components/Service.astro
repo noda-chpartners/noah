@@ -1,0 +1,148 @@
+---
+import { Image } from "astro:assets";
+import { SERVICES } from "../data/content";
+---
+
+<section class="section service" id="service">
+  <div class="section__inner">
+    <header class="ed-head">
+      <p class="ed-label">( Our Service )</p>
+      <h2 class="ed-title js-shuffle" data-shuffle="view">Service</h2>
+    </header>
+
+    <ul class="service__list">
+      {
+        SERVICES.map((item, index) => (
+          <li class="service__item">
+            <div class="service__media">
+              <Image
+                class="service__image image"
+                src={item.image}
+                alt={item.title}
+              />
+            </div>
+            <div class="service__copy">
+              <p class="service__number ed-label">
+                ( {String(index + 1).padStart(2, "0")} )
+              </p>
+              <p class="service__tag">{item.tag}</p>
+              <h3 class="service__title">{item.title}</h3>
+              <p class="service__text">{item.description}</p>
+              <a class="ed-textlink service__link" href="/contact">Contact</a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="service__foot ed-label" aria-hidden="true">
+      {SERVICES.map((item, index) => (
+        <span class="service__foot_item">
+          {String(index + 1).padStart(2, "0")} {item.title}
+        </span>
+      ))}
+    </p>
+  </div>
+</section>
+
+<style lang="scss">
+  .service {
+    border-top: 1px solid $c-line;
+
+    &__list {
+      display: grid;
+      gap: 96px;
+
+      @include tab {
+        gap: 140px;
+      }
+    }
+
+    &__item {
+      display: grid;
+      gap: 32px;
+
+      @include tab {
+        grid-template-columns: 7fr 5fr;
+        gap: 48px 80px;
+        align-items: center;
+      }
+
+      &:nth-child(even) {
+        @include tab {
+          grid-template-columns: 5fr 7fr;
+
+          .service__media {
+            order: 2;
+          }
+        }
+      }
+    }
+
+    &__media {
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+
+    &__copy {
+      @include tab {
+        padding-top: 32px;
+      }
+    }
+
+    &__number {
+      margin-bottom: 28px;
+    }
+
+    &__tag {
+      margin-bottom: 12px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: $c-muted;
+    }
+
+    &__title {
+      margin-bottom: 20px;
+      font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      line-height: 1.5;
+    }
+
+    &__text {
+      max-width: 26em;
+      margin-bottom: 32px;
+      font-size: 0.9rem;
+      line-height: 2.1;
+      color: rgba($c-base, 0.78);
+    }
+
+    &__item:hover :global(.service__image) {
+      transform: scale(1.03);
+    }
+
+    &__foot {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 32px;
+      margin-top: 96px;
+      padding-top: 24px;
+      border-top: 1px solid $c-line;
+
+      @include tab {
+        margin-top: 140px;
+      }
+    }
+  }
+
+  :global(.service__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: transform 1s ease;
+  }
+</style>

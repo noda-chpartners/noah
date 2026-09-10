@@ -1,0 +1,61 @@
+---
+import '../styles/reset.css';
+import '../styles/global.scss';
+
+import { SITE_ASSETS, SITE_INFO } from '../constants/site';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Loader from '../components/Loader.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_INFO.title}` : SITE_INFO.title;
+const isHome = Astro.url.pathname === "/";
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href={SITE_ASSETS.favicon} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+    <meta property="og:image" content={SITE_ASSETS.ogp} />
+		<title>{pageTitle}</title>
+
+    <!-- Google Fonts の読み込み（例: Noto Sans JP） -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <script is:inline>
+      (() => {
+        try {
+          if (sessionStorage.getItem("noah-loader")) {
+            document.documentElement.classList.add("is-ready");
+          } else {
+            document.documentElement.classList.add("is-awaiting-loader");
+          }
+        } catch {
+          document.documentElement.classList.add("is-ready");
+        }
+      })();
+    </script>
+	</head>
+	<body class:list={[!isHome && "is-subpage"]}>
+    <Loader />
+		<Header isSubpage={!isHome} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import "../scripts/lenis";
+      import "../scripts/loader";
+      import "../scripts/animations";
+      import "../scripts/shuffle-text";
+    </script>
+	</body>
+</html>

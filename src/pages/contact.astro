@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/ContactForm.astro";
+import SnsList from "../components/SnsList.astro";
+import { COMPANY_INFO } from "../constants/site";
+---
+
+<BaseLayout title="お問い合わせ">
+  <section class="section page contact-page">
+    <div class="section__inner">
+      <header class="ed-head">
+        <p class="ed-label">( Get in touch )</p>
+        <h1 class="ed-title js-shuffle" data-shuffle="view">Contact</h1>
+      </header>
+
+      <div class="contact-page__layout">
+        <div class="contact-page__info page-block">
+          <p class="contact-page__lead">
+            お仕事のご相談、採用についてのご質問など、<br />
+            お気軽にお問い合わせください。
+          </p>
+
+          <div class="contact-page__block">
+            <p class="ed-label">( TEL )</p>
+            <a class="contact-page__tel" href={`tel:${COMPANY_INFO.telLink}`}>
+              {COMPANY_INFO.tel}
+            </a>
+          </div>
+
+          <div class="contact-page__block">
+            <p class="ed-label">( Address )</p>
+            <p class="contact-page__address">
+              {COMPANY_INFO.postalCode}<br />
+              {COMPANY_INFO.address}
+            </p>
+          </div>
+
+          <div class="contact-page__block">
+            <p class="ed-label">( SNS )</p>
+            <SnsList />
+          </div>
+        </div>
+
+        <div class="contact-page__form page-block">
+          <p class="ed-label contact-page__form_label">( Form )</p>
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  .contact-page {
+    &__layout {
+      display: grid;
+      gap: 72px;
+
+      @include pc {
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 96px;
+        align-items: start;
+      }
+    }
+
+    &__lead {
+      margin-bottom: 48px;
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      line-height: 1.9;
+    }
+
+    &__block {
+      margin-bottom: 36px;
+
+      .ed-label {
+        margin-bottom: 12px;
+      }
+    }
+
+    &__tel {
+      display: inline-block;
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.55;
+      }
+    }
+
+    &__address {
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      line-height: 2;
+    }
+
+    &__form_label {
+      margin-bottom: 8px;
+    }
+  }
+</style>

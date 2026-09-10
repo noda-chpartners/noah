@@ -1,0 +1,58 @@
+---
+import { Icon } from "astro-icon/components";
+import { SNS_LINKS } from "../constants/site";
+---
+
+<ul class="sns">
+  {
+    SNS_LINKS.map((sns) => (
+      <li class="sns__item">
+        {sns.href === "#" ? (
+          <span class="sns__link sns__link--soon" title={sns.label}>
+            <Icon class="sns__icon" name={sns.icon} />
+            <span class="sns__name">{sns.label}</span>
+          </span>
+        ) : (
+          <a
+            class="sns__link link"
+            href={sns.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={sns.name}
+          >
+            <Icon class="sns__icon" name={sns.icon} />
+            <span class="sns__name">{sns.name}</span>
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style lang="scss">
+  .sns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+
+    &__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    &__link--soon {
+      opacity: 0.45;
+      cursor: default;
+    }
+  }
+
+  :global(.sns__icon) {
+    width: 18px;
+    height: 18px;
+    color: currentColor;
+  }
+</style>

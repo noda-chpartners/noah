@@ -1,0 +1,12 @@
+---
+interface Props {
+  title: string;
+  index: string;
+}
+
+const { title, index } = Astro.props;
+---
+
+<header class="section__head">
+  <h2 class="section__title js-shuffle" data-shuffle="view">{title}</h2>
+</header>

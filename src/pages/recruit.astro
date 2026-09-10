@@ -1,0 +1,156 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { RECRUIT } from "../data/content";
+---
+
+<BaseLayout title="採用情報">
+  <section class="section page recruit">
+    <div class="section__inner">
+      <header class="ed-head">
+        <p class="ed-label">( {RECRUIT.label} )</p>
+        <h1 class="ed-title js-shuffle" data-shuffle="view">{RECRUIT.title}</h1>
+      </header>
+
+      <div class="recruit__intro page-block">
+        <p class="recruit__lead">{RECRUIT.lead}</p>
+        <p class="recruit__text">{RECRUIT.text}</p>
+      </div>
+
+      <ul class="recruit__list">
+        {
+          RECRUIT.jobs.map((job, index) => (
+            <li class="recruit__item page-block">
+              <p class="ed-label">( {String(index + 1).padStart(2, "0")} )</p>
+              <p class="recruit__tag">{job.tag}</p>
+              <h2 class="recruit__title">{job.title}</h2>
+              <p class="recruit__description">{job.description}</p>
+
+              <dl class="recruit__meta">
+                <div class="recruit__row">
+                  <dt class="ed-label">( 雇用形態 )</dt>
+                  <dd>{job.type}</dd>
+                </div>
+                <div class="recruit__row">
+                  <dt class="ed-label">( 勤務地 )</dt>
+                  <dd>{job.location}</dd>
+                </div>
+              </dl>
+
+              <a class="ed-button" href="/contact?type=recruit">応募する</a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="recruit__foot page-block">
+        <p class="ed-label">( Entry )</p>
+        <p class="recruit__foot_text">まずはカジュアルにお話しましょう。</p>
+        <a class="ed-textlink" href="/contact?type=recruit">お問い合わせへ</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  .recruit {
+    &__intro {
+      max-width: 38em;
+      margin-bottom: 80px;
+
+      @include tab {
+        margin-bottom: 112px;
+      }
+    }
+
+    &__lead {
+      margin-bottom: 20px;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+    }
+
+    &__text {
+      color: $c-muted;
+      font-size: 0.9rem;
+      line-height: 2.1;
+    }
+
+    &__list {
+      display: grid;
+      gap: 72px;
+
+      @include tab {
+        gap: 96px;
+      }
+    }
+
+    &__item {
+      padding-bottom: 72px;
+      border-bottom: 1px solid $c-line;
+
+      @include tab {
+        padding-bottom: 96px;
+      }
+    }
+
+    &__tag {
+      margin: 20px 0 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: $c-muted;
+    }
+
+    &__title {
+      margin-bottom: 20px;
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    }
+
+    &__description {
+      max-width: 36em;
+      margin-bottom: 40px;
+      font-size: 0.9rem;
+      line-height: 2.1;
+      color: rgba($c-base, 0.78);
+    }
+
+    &__meta {
+      margin-bottom: 48px;
+    }
+
+    &__row {
+      display: grid;
+      gap: 8px;
+      padding: 22px 0;
+      border-top: 1px solid $c-line;
+
+      @include tab {
+        grid-template-columns: 160px 1fr;
+        gap: 32px;
+        align-items: baseline;
+      }
+
+      &:last-child {
+        border-bottom: 1px solid $c-line;
+      }
+    }
+
+    &__foot {
+      margin-top: 80px;
+
+      @include tab {
+        margin-top: 104px;
+      }
+    }
+
+    &__foot_text {
+      margin: 16px 0 28px;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+  }
+</style>

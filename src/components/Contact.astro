@@ -1,0 +1,124 @@
+---
+import { COMPANY_INFO } from "../constants/site";
+import SnsList from "./SnsList.astro";
+---
+
+<section class="section contact" id="contact">
+  <div class="section__inner">
+    <header class="ed-head contact__head">
+      <p class="ed-label">( Get in touch )</p>
+      <h2 class="ed-title js-shuffle" data-shuffle="view">Contact</h2>
+    </header>
+
+    <div class="contact__body">
+      <p class="contact__label ed-label">( TEL )</p>
+      <a class="contact__tel" href={`tel:${COMPANY_INFO.telLink}`}>
+        {COMPANY_INFO.tel}
+      </a>
+      <p class="contact__note">お気軽にお問い合わせください。</p>
+
+      <div class="contact__actions">
+        <a class="ed-button" href="/contact">
+          お問い合わせフォーム
+        </a>
+        <a class="ed-textlink" href={`tel:${COMPANY_INFO.telLink}`}>電話で問い合わせる</a>
+      </div>
+
+      <div class="contact__meta">
+        <div class="contact__meta_col">
+          <p class="ed-label">( Address )</p>
+          <p class="contact__address">
+            {COMPANY_INFO.postalCode}<br />
+            {COMPANY_INFO.address}
+          </p>
+        </div>
+        <div class="contact__meta_col">
+          <p class="ed-label">( SNS )</p>
+          <SnsList />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .contact {
+    border-top: 1px solid $c-line;
+    text-align: center;
+
+    &__head {
+      margin-bottom: 64px;
+
+      @include tab {
+        margin-bottom: 88px;
+      }
+    }
+
+    &__body {
+      width: 100%;
+      max-width: 720px;
+      margin-inline: auto;
+    }
+
+    &__label {
+      margin-bottom: 16px;
+    }
+
+    &__tel {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: clamp(2rem, 5.2vw, 3.6rem);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      line-height: 1.1;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.55;
+      }
+    }
+
+    &__note {
+      margin-bottom: 44px;
+      font-size: 0.88rem;
+      letter-spacing: 0.1em;
+      color: $c-muted;
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 80px;
+
+      @include tab {
+        margin-bottom: 104px;
+      }
+    }
+
+    &__meta {
+      display: grid;
+      gap: 40px;
+      padding-top: 40px;
+      border-top: 1px solid $c-line;
+
+      @include tab {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+    }
+
+    &__meta_col {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+    }
+
+    &__address {
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      line-height: 2;
+    }
+  }
+</style>

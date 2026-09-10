@@ -1,0 +1,191 @@
+---
+import { Image } from "astro:assets";
+import {
+  SITE_INFO,
+  SITE_ASSETS,
+  NAV_ITEMS,
+  COMPANY_INFO,
+  resolveNavHref,
+} from "../constants/site";
+import SnsList from "./SnsList.astro";
+
+const year = new Date().getFullYear();
+const pathname = Astro.url.pathname;
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <a class="footer__logo" href="/">
+        <Image
+          class="footer__logo_image image"
+          src={SITE_ASSETS.logo.white}
+          alt={SITE_INFO.title}
+        />
+      </a>
+      <button class="footer__totop" type="button" id="footer-totop">
+        <span class="footer__totop_line" aria-hidden="true"></span>
+        Back to top
+      </button>
+    </div>
+
+    <div class="footer__grid">
+      <nav class="footer__col" aria-label="フッターナビゲーション">
+        <p class="ed-label footer__label">( Menu )</p>
+        <ul class="footer__nav">
+          {
+            NAV_ITEMS.map((item) => (
+              <li>
+                <a class="footer__nav_link link" href={resolveNavHref(item.href, pathname)}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <p class="ed-label footer__label">( Company )</p>
+        <p class="footer__text">
+          {SITE_INFO.title}<br />
+          {COMPANY_INFO.postalCode}<br />
+          {COMPANY_INFO.address}
+        </p>
+        <a class="footer__text link" href={`tel:${COMPANY_INFO.telLink}`}>
+          TEL {COMPANY_INFO.tel}
+        </a>
+      </div>
+
+      <div class="footer__col">
+        <p class="ed-label footer__label">( SNS )</p>
+        <SnsList />
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">© {year} {SITE_INFO.title} All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import lenis from "../scripts/lenis";
+
+  document
+    .getElementById("footer-totop")
+    ?.addEventListener("click", () => lenis.scrollTo(0));
+</script>
+
+<style lang="scss">
+  .footer {
+    background-color: $c-base;
+    color: $c-white;
+    padding: 72px 6% 32px;
+
+    @include pc {
+      padding: 96px 4% 40px;
+    }
+
+    &__inner {
+      width: 100%;
+      max-width: 1120px;
+      margin-inline: auto;
+    }
+
+    &__top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 64px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid $c-line-light;
+
+      @include tab {
+        margin-bottom: 88px;
+        padding-bottom: 48px;
+      }
+    }
+
+    &__logo {
+      display: block;
+      width: 200px;
+      max-width: 60vw;
+    }
+
+    &__totop {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.55;
+      }
+
+      &_line {
+        display: block;
+        width: 1px;
+        height: 40px;
+        background-color: currentColor;
+      }
+    }
+
+    &__grid {
+      display: grid;
+      gap: 48px;
+      margin-bottom: 72px;
+
+      @include tab {
+        grid-template-columns: 1fr 1.3fr 1fr;
+        gap: 48px;
+        margin-bottom: 96px;
+      }
+    }
+
+    &__label {
+      margin-bottom: 20px;
+      color: rgba($c-white, 0.5);
+    }
+
+    &__nav {
+      display: grid;
+      gap: 14px;
+    }
+
+    &__nav_link {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+    }
+
+    &__text {
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      line-height: 2;
+      color: rgba($c-white, 0.72);
+    }
+
+    &__bottom {
+      padding-top: 24px;
+      border-top: 1px solid $c-line-light;
+    }
+
+    &__copy {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: rgba($c-white, 0.4);
+    }
+  }
+
+  :global(.footer__logo_image) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>
