@@ -3,6 +3,8 @@ import ShuffleText from "shuffle-text";
 const DURATION = 800;
 const VIEW_THRESHOLD = 0.4;
 
+const targets = new Set<HTMLElement>();
+
 const initAll = () => {
   document.querySelectorAll<HTMLElement>(".js-shuffle").forEach(initShuffleText);
 };
@@ -21,9 +23,27 @@ if (document.documentElement.classList.contains("is-ready")) {
   window.addEventListener("noah:ready", start, { once: true });
 }
 
+const shouldLockWidth = (el: HTMLElement) => {
+  return getComputedStyle(el).display.includes("inline");
+};
+
 const lockWidth = (el: HTMLElement) => {
-  if (el.style.width) return;
-  el.style.width = `${Math.ceil(el.getBoundingClientRect().width)}px`;
+  el.style.maxWidth = "100%";
+  el.style.overflow = "hidden";
+
+  if (shouldLockWidth(el)) {
+    el.style.width = "";
+    const w = Math.ceil(el.getBoundingClientRect().width);
+    if (w > 0) el.style.width = `${w}px`;
+    return;
+  }
+
+  el.style.width = "100%";
+  el.style.whiteSpace = "nowrap";
+};
+
+const relockAll = () => {
+  targets.forEach(lockWidth);
 };
 
 const bindHover = (el: HTMLElement, text: ShuffleText) => {
@@ -46,8 +66,11 @@ const bindView = (el: HTMLElement, text: ShuffleText) => {
 };
 
 const initShuffleText = (el: HTMLElement) => {
+  if (targets.has(el)) return;
+
   const text = new ShuffleText(el);
   text.duration = DURATION;
+  targets.add(el);
   lockWidth(el);
 
   const modes = (el.dataset.shuffle ?? "load").split(/\s+/);
@@ -56,3 +79,9 @@ const initShuffleText = (el: HTMLElement) => {
   if (modes.includes("view")) bindView(el, text);
   if (modes.includes("load")) text.start();
 };
+
+let resizeTimer = 0;
+window.addEventListener("resize", () => {
+  window.clearTimeout(resizeTimer);
+  resizeTimer = window.setTimeout(relockAll, 120);
+});

@@ -1,22 +1,16 @@
 ---
 import { Image } from "astro:assets";
-import { SITE_ASSETS, SITE_INFO } from "../constants/site";
+import loadingBg from "../assets/images/loading-bg.png";
 ---
 
 <div class="loader" id="loader" aria-hidden="true">
-  <p class="loader__label">( Welcome )</p>
-  <div class="loader__brand">
-    <Image
-      class="loader__logo image"
-      src={SITE_ASSETS.logo.white}
-      alt={SITE_INFO.title}
-    />
+  <div class="loader__media">
+    <Image class="loader__bg" src={loadingBg} alt="" />
   </div>
-  <div class="loader__meta">
-    <div class="loader__bar" aria-hidden="true">
-      <span class="loader__progress"></span>
-    </div>
-    <p class="loader__count">000</p>
+  <div class="loader__veil" aria-hidden="true"></div>
+  <div class="loader__copy">
+    <p class="loader__title">Be Your Sun.</p>
+    <p class="loader__lead">照らせ。誰でもない、自分を。</p>
   </div>
 </div>
 
@@ -25,16 +19,13 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
     position: fixed;
     inset: 0;
     z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    background-color: $c-base;
-    color: $c-white;
+    display: grid;
+    place-items: center;
     overflow: hidden;
+    background-color: #f3c48a;
     pointer-events: none;
     visibility: hidden;
+    color: $c-base;
 
     :global(html.is-awaiting-loader) & {
       visibility: visible;
@@ -46,49 +37,55 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
       pointer-events: none;
     }
 
-    &__label {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      color: rgba($c-white, 0.5);
-    }
-
-    &__brand {
-      width: min(220px, 56vw);
-    }
-
-    &__meta {
-      display: grid;
-      justify-items: center;
-      gap: 16px;
-      width: min(240px, 70vw);
-    }
-
-    &__bar {
-      width: 100%;
-      height: 1px;
-      background-color: rgba($c-white, 0.18);
+    &__media {
+      position: absolute;
+      inset: 0;
       overflow: hidden;
     }
 
-    &__progress {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background-color: $c-white;
-      transform: scaleX(0);
-      transform-origin: left center;
+    &__veil {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to top,
+        rgba($c-white, 0.08) 0%,
+        rgba($c-white, 0.04) 50%,
+        rgba($c-white, 0.06) 100%
+      );
     }
 
-    &__count {
-      font-size: 0.72rem;
+    &__copy {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      justify-items: center;
+      gap: 20px;
+      padding: 0 6%;
+      text-align: center;
+    }
+
+    &__title {
+      font-size: clamp(2.2rem, 7.2vw, 5.2rem);
       font-weight: 300;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.08em;
+      line-height: 1.15;
+    }
+
+    &__lead {
+      font-size: clamp(0.82rem, 1.6vw, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      line-height: 1.8;
     }
   }
 
-  :global(.loader__logo) {
+  :global(.loader__bg) {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
   }
 </style>

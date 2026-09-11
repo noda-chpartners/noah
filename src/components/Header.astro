@@ -3,22 +3,21 @@ import { Image } from "astro:assets";
 import { SITE_INFO, SITE_ASSETS, NAV_ITEMS, resolveNavHref } from "../constants/site";
 
 const pathname = Astro.url.pathname;
-
-interface Props {
-  isSubpage?: boolean;
-}
-
-const { isSubpage = false } = Astro.props;
 ---
 
-<header class:list={["header", isSubpage && "is-subpage"]} id="header">
+<header class="header" id="header">
   <div class="header__backdrop" aria-hidden="true"></div>
   <h1 class="header__logo">
     <a class="header__logo_link" href="/">
       <Image
-        class="header__logo_image image"
+        class="header__logo_image header__logo_image--white image"
         src={SITE_ASSETS.logo.white}
         alt={`${SITE_INFO.title}ロゴ`}
+      />
+      <Image
+        class="header__logo_image header__logo_image--black image"
+        src={SITE_ASSETS.logo.black}
+        alt=""
       />
     </a>
   </h1>
@@ -80,10 +79,12 @@ const { isSubpage = false } = Astro.props;
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     padding: 18px 5%;
     color: $c-white;
     background: linear-gradient(
@@ -109,12 +110,10 @@ const { isSubpage = false } = Astro.props;
       transition: opacity 0.35s ease;
     }
 
-    &.is-subpage &__backdrop,
     &.is-open &__backdrop {
       opacity: 1;
     }
 
-    &.is-subpage,
     &.is-open {
       background: transparent;
       border-bottom: 1px solid $c-line-light;
@@ -122,11 +121,12 @@ const { isSubpage = false } = Astro.props;
 
     &__logo {
       width: 118px;
+      flex-shrink: 0;
       position: relative;
       z-index: 2;
 
       @include pc {
-        width: 148px;
+        width: clamp(120px, 10vw, 148px);
       }
     }
 
@@ -218,7 +218,7 @@ const { isSubpage = false } = Astro.props;
 
         @include pc {
           flex-direction: row;
-          gap: 40px;
+          gap: clamp(16px, 2.4vw, 40px);
           font-size: 0.75rem;
         }
       }
@@ -247,5 +247,9 @@ const { isSubpage = false } = Astro.props;
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  :global(.header__logo_image--black) {
+    display: none;
   }
 </style>

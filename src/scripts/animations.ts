@@ -13,20 +13,29 @@ const playHero = () => {
 
   const image = hero.querySelector(".hero__image");
   const catchCopy = hero.querySelector(".hero__catch");
+  const subCopy = hero.querySelector(".hero__sub");
 
   if (image) {
     gsap.fromTo(
       image,
-      { scale: 1.12 },
-      { scale: 1, duration: 1.8, ease: "power2.out" },
+      { scale: 1.06 },
+      { scale: 1, duration: 2.2, ease: "power2.out" },
     );
   }
 
   if (catchCopy) {
     gsap.fromTo(
       catchCopy,
-      { y: 36, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.15, delay: 0.35, ease: "power3.out" },
+      { y: 28, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.25, delay: 0.15, ease: "power3.out" },
+    );
+  }
+
+  if (subCopy) {
+    gsap.fromTo(
+      subCopy,
+      { y: 16, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.05, delay: 0.4, ease: "power3.out" },
     );
   }
 };
@@ -51,8 +60,24 @@ const reveal = (elements: NodeListOf<Element> | Element[], extra: gsap.TweenVars
 const initReveals = () => {
   reveal(document.querySelectorAll(".ed-head"));
   reveal(document.querySelectorAll(".about__vision, .about__block, .about__greeting"));
+  reveal(document.querySelectorAll(".gallery__lead"));
   reveal(document.querySelectorAll(".company__layout, .contact__body"));
   reveal(document.querySelectorAll(".page-block, .js-reveal"));
+
+  document.querySelectorAll(".gallery__item").forEach((item, index) => {
+    gsap.from(item, {
+      y: 36,
+      opacity: 0,
+      duration: 1,
+      delay: Math.min(index * 0.06, 0.3),
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: item,
+        start: "top 88%",
+        once: true,
+      },
+    });
+  });
 
   document.querySelectorAll(".service__item").forEach((item) => {
     const media = item.querySelector(".service__media");

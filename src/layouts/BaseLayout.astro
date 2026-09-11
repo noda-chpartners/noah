@@ -14,14 +14,13 @@ interface Props {
 
 const { title } = Astro.props;
 const pageTitle = title ? `${title} | ${SITE_INFO.title}` : SITE_INFO.title;
-const isHome = Astro.url.pathname === "/";
 ---
 
 <html lang="ja">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href={SITE_ASSETS.favicon} />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
     <meta property="og:image" content={SITE_ASSETS.ogp} />
 		<title>{pageTitle}</title>
@@ -44,9 +43,9 @@ const isHome = Astro.url.pathname === "/";
       })();
     </script>
 	</head>
-	<body class:list={[!isHome && "is-subpage"]}>
+	<body>
     <Loader />
-		<Header isSubpage={!isHome} />
+		<Header />
     <main>
       <slot />
     </main>

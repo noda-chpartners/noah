@@ -84,7 +84,9 @@ import { CONTACT_TYPES } from "../data/content";
 
   <p class="form__error" id="contact-error" role="alert" hidden></p>
 
-  <button class="ed-button form__submit" type="submit">送信する</button>
+  <p class="form__cta">
+    <button class="ed-button form__submit" type="submit">送信する</button>
+  </p>
 </form>
 
 <div class="form-done" id="contact-done" hidden>
@@ -209,8 +211,13 @@ import { CONTACT_TYPES } from "../data/content";
       letter-spacing: 0.06em;
     }
 
-    &__submit {
+    &__cta {
+      display: flex;
+      justify-content: center;
       margin-top: 40px;
+    }
+
+    &__submit {
       width: 100%;
       max-width: 320px;
       cursor: pointer;

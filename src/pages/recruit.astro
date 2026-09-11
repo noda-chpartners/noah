@@ -36,7 +36,9 @@ import { RECRUIT } from "../data/content";
                 </div>
               </dl>
 
-              <a class="ed-button" href="/contact?type=recruit">応募する</a>
+              <p class="recruit__cta">
+                <a class="ed-button" href="/contact?type=recruit">応募する</a>
+              </p>
             </li>
           ))
         }
@@ -45,7 +47,9 @@ import { RECRUIT } from "../data/content";
       <div class="recruit__foot page-block">
         <p class="ed-label">( Entry )</p>
         <p class="recruit__foot_text">まずはカジュアルにお話しましょう。</p>
-        <a class="ed-textlink" href="/contact?type=recruit">お問い合わせへ</a>
+        <p class="recruit__cta">
+          <a class="ed-textlink" href="/contact?type=recruit">お問い合わせへ</a>
+        </p>
       </div>
     </div>
   </section>
@@ -152,5 +156,11 @@ import { RECRUIT } from "../data/content";
       font-weight: 300;
       letter-spacing: 0.1em;
     }
+  }
+
+  :global(.recruit__cta) {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 </style>

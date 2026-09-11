@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/hero.png";
-import { ABOUT } from "../data/content";
 ---
 
 <section class="hero">
@@ -10,7 +9,10 @@ import { ABOUT } from "../data/content";
   </div>
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="hero__content">
-    <p class="hero__catch">{ABOUT.vision.subtitle}</p>
+    <div class="hero__copy">
+      <p class="hero__catch">HEAD OUT.</p>
+      <p class="hero__sub">出発しよう。</p>
+    </div>
   </div>
 </section>
 
@@ -52,13 +54,31 @@ import { ABOUT } from "../data/content";
       }
     }
 
+    &__copy {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      max-width: 100%;
+    }
+
     &__catch {
-      max-width: 18em;
+      display: block;
       color: $c-white;
-      font-size: clamp(1.35rem, 3.4vw, 2.4rem);
+      font-size: clamp(2.2rem, 6.4vw, 5.4rem);
       font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    &__sub {
+      margin-top: 14px;
+      margin-right: 18%;
+      color: $c-white;
+      font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+      font-weight: 400;
+      letter-spacing: 0.28em;
       line-height: 1.6;
-      letter-spacing: 0.12em;
     }
   }
 

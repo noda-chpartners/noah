@@ -1,6 +1,8 @@
 html {
   scroll-behavior: auto;
   scroll-padding-top: 80px;
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
 }
 
 html.is-awaiting-loader,
@@ -126,6 +128,7 @@ body.is-nav-open {
 }
 
 .ed-title {
+  max-width: 100%;
   margin-top: 16px;
   font-size: clamp(1.6rem, 3.2vw, 2.6rem);
   font-weight: 300;
@@ -186,4 +189,10 @@ body.is-nav-open {
   &:hover {
     opacity: 0.55;
   }
+}
+
+.recruit__cta {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
