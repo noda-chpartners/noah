@@ -48,9 +48,11 @@ export const resolveNavHref = (href: string, pathname: string) =>
 export const padIndex = (index: number, digits = 2) =>
   String(index).padStart(digits, "0");
 
+export const LINE_URL = "https://line.me/ti/p/YF2RZP-f5z";
+
 export const SNS_LINKS = [
   { name: "Instagram", label: "Comming soon", href: "#", icon: "simple-icons:instagram" },
-  { name: "LINE", label: "LINE", href: "#", icon: "simple-icons:line" },
+  { name: "LINE", label: "LINE", href: LINE_URL, icon: "simple-icons:line" },
 ] as const;
 
 const POSTAL_CODE = "170-0011";

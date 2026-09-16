@@ -15,7 +15,7 @@ export const SECTION = {
   contact: {
     label: "Get in touch",
     title: "Contact",
-    note: "お気軽にお問い合わせください。",
+    note: "ご連絡は、下記のLINEまたは電話番号へお願いいたします。",
   },
 } as const;
 
@@ -123,7 +123,7 @@ export const RECRUIT = {
   label: "Join us",
   lead: "一緒に挑戦する仲間を募集しています。",
   text: "会社や環境に人生を決められるのではなく、自分の力で選択肢を増やせる人を増やしたい。その想いに共感し、並走してくれる方を待っています。",
-  applyHref: "/contact?type=recruit",
+  applyHref: "/#contact",
   jobs: SERVICES.map((service) => ({
     id: service.id,
     title: service.title,

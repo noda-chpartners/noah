@@ -1,5 +1,5 @@
 ---
-import { COMPANY_INFO } from "../constants/site";
+import { COMPANY_INFO, LINE_URL } from "../constants/site";
 import { SECTION } from "../data/content";
 import EdHead from "./EdHead.astro";
 ---
@@ -17,8 +17,13 @@ import EdHead from "./EdHead.astro";
         <p class="contact__note">{SECTION.contact.note}</p>
 
         <div class="contact__actions">
-          <a class="ed-button" href="/contact">
-            お問い合わせフォーム
+          <a
+            class="ed-button"
+            href={LINE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LINE
           </a>
           <a class="ed-textlink" href={`tel:${COMPANY_INFO.telLink}`}>
             {COMPANY_INFO.tel}
