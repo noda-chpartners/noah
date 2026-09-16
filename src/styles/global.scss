@@ -137,7 +137,8 @@ body.is-nav-open {
   font-size: clamp(1.6rem, 3.2vw, 2.6rem);
   font-weight: 300;
   letter-spacing: 0.28em;
-  line-height: 1.1;
+  line-height: 1.35;
+  padding-bottom: 0.12em;
   text-indent: 0.1em;
 
   @include tab {
