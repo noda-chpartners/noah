@@ -60,15 +60,44 @@ import { CONTACT_TYPES } from "../data/content";
   </div>
 
   <div class="form__field">
-    <label class="form__label ed-label" for="contact-type">( お問い合わせ種別 )</label>
-    <select class="form__input form__select" id="contact-type" name="type" required>
-      <option value="" disabled selected>選択してください</option>
-      {
-        CONTACT_TYPES.map((item) => (
-          <option value={item.value}>{item.label}</option>
-        ))
-      }
-    </select>
+    <label class="form__label ed-label" for="contact-type-trigger">( お問い合わせ種別 )</label>
+    <div class="form__select">
+      <select
+        class="form__select-native"
+        id="contact-type"
+        name="type"
+        required
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <option value="" disabled selected>選択してください</option>
+        {
+          CONTACT_TYPES.map((item) => (
+            <option value={item.value}>{item.label}</option>
+          ))
+        }
+      </select>
+      <button
+        class="form__input form__select-trigger"
+        id="contact-type-trigger"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-controls="contact-type-list"
+      >
+        <span class="form__select-value">選択してください</span>
+        <span class="form__select-icon" aria-hidden="true"></span>
+      </button>
+      <ul class="form__select-list" id="contact-type-list" role="listbox" aria-hidden="true">
+        {
+          CONTACT_TYPES.map((item) => (
+            <li class="form__select-option" role="option" data-value={item.value} aria-selected="false">
+              {item.label}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 
   <div class="form__field">
@@ -104,14 +133,103 @@ import { CONTACT_TYPES } from "../data/content";
   const done = document.getElementById("contact-done");
   const error = document.getElementById("contact-error");
   const typeField = document.getElementById("contact-type") as HTMLSelectElement | null;
+  const typeWrap = document.querySelector(".form__select");
+  const typeTrigger = document.getElementById("contact-type-trigger") as HTMLButtonElement | null;
+  const typeValue = typeTrigger?.querySelector(".form__select-value");
+  const typeList = document.getElementById("contact-type-list");
+  const typeOptions = [
+    ...document.querySelectorAll<HTMLElement>(".form__select-option"),
+  ];
+
+  const placeholder = "選択してください";
+
+  const setType = (value: string) => {
+    if (!typeField || !typeValue) return;
+    typeField.value = value;
+    typeField.dispatchEvent(new Event("change", { bubbles: true }));
+
+    const selected = typeOptions.find((option) => option.dataset.value === value);
+    typeValue.textContent = selected?.textContent?.trim() || placeholder;
+    typeWrap?.classList.toggle("is-filled", Boolean(value));
+    typeOptions.forEach((option) => {
+      option.setAttribute("aria-selected", String(option.dataset.value === value));
+    });
+  };
+
+  const closeType = () => {
+    if (!typeTrigger || !typeList) return;
+    if (typeTrigger.getAttribute("aria-expanded") !== "true") return;
+    typeTrigger.setAttribute("aria-expanded", "false");
+    typeList.setAttribute("aria-hidden", "true");
+    typeWrap?.classList.remove("is-open");
+  };
+
+  const openType = () => {
+    if (!typeTrigger || !typeList) return;
+    if (typeTrigger.getAttribute("aria-expanded") === "true") return;
+    typeTrigger.setAttribute("aria-expanded", "true");
+    typeList.setAttribute("aria-hidden", "false");
+    typeWrap?.classList.add("is-open");
+  };
 
   const type = new URLSearchParams(location.search).get("type");
   if (type && typeField) {
     const allowed = new Set(
       [...typeField.options].map((option) => option.value).filter(Boolean),
     );
-    if (allowed.has(type)) typeField.value = type;
+    if (allowed.has(type)) setType(type);
   }
+
+  typeTrigger?.addEventListener("click", () => {
+    const open = typeTrigger.getAttribute("aria-expanded") === "true";
+    if (open) closeType();
+    else openType();
+  });
+
+  typeOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      setType(option.dataset.value ?? "");
+      closeType();
+      typeTrigger?.focus();
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!typeWrap || typeWrap.contains(event.target as Node)) return;
+    closeType();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeType();
+  });
+
+  typeTrigger?.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowDown") return;
+    event.preventDefault();
+    openType();
+    const selected = typeOptions.find((option) => option.getAttribute("aria-selected") === "true");
+    (selected ?? typeOptions[0])?.focus();
+  });
+
+  typeOptions.forEach((option, index) => {
+    option.tabIndex = -1;
+    option.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        typeOptions[(index + 1) % typeOptions.length]?.focus();
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        typeOptions[(index - 1 + typeOptions.length) % typeOptions.length]?.focus();
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        setType(option.dataset.value ?? "");
+        closeType();
+        typeTrigger?.focus();
+      }
+    });
+  });
 
   const showError = (message: string) => {
     if (!error) return;
@@ -164,8 +282,14 @@ import { CONTACT_TYPES } from "../data/content";
     }
 
     &__field {
+      position: relative;
+      z-index: 0;
       padding: 22px 0;
       border-bottom: 1px solid $c-line;
+    }
+
+    &__field:has(.form__select.is-open) {
+      z-index: 2;
     }
 
     &__label {
@@ -192,13 +316,141 @@ import { CONTACT_TYPES } from "../data/content";
     }
 
     &__select {
-      cursor: pointer;
+      position: relative;
+    }
+
+    &__select-native {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    &__select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
       appearance: none;
-      background-image: linear-gradient($c-base, $c-base);
-      background-position: right 8px center;
-      background-repeat: no-repeat;
-      background-size: 8px 1px;
-      padding-right: 24px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    &__select-value {
+      min-width: 0;
+      color: $c-muted;
+    }
+
+    &__select.is-filled &__select-value {
+      color: $c-base;
+    }
+
+    &__select-icon {
+      position: relative;
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      color: $c-base;
+      opacity: 0.45;
+    }
+
+    &__select-icon::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 1px;
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+    }
+
+    &__select.is-open &__select-icon::before {
+      top: 6px;
+      transform: rotate(225deg);
+    }
+
+    &__select-list {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 12px);
+      z-index: 8;
+      margin: 0;
+      padding: 8px 0;
+      list-style: none;
+      background-color: $c-white;
+      border: 1px solid $c-line;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate3d(0, -10px, 0);
+      transform-origin: top center;
+      transition:
+        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.4s;
+    }
+
+    &__select.is-open &__select-list {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0);
+    }
+
+    &__select-option {
+      padding: 12px 16px;
+      color: $c-base;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+      cursor: pointer;
+      opacity: 0;
+      transform: translate3d(0, 6px, 0);
+      transition:
+        background-color 0.2s ease,
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    &__select.is-open &__select-option {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    &__select.is-open &__select-option:nth-child(1) {
+      transition-delay: 0.04s;
+    }
+
+    &__select.is-open &__select-option:nth-child(2) {
+      transition-delay: 0.08s;
+    }
+
+    &__select.is-open &__select-option:nth-child(3) {
+      transition-delay: 0.12s;
+    }
+
+    &__select-option:hover,
+    &__select-option[aria-selected="true"] {
+      background-color: rgba($c-base, 0.05);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &__select-list,
+      &__select-option,
+      &__select-icon::before {
+        transition: none;
+      }
     }
 
     &__textarea {
