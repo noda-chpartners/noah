@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { HERO } from "../data/content";
 import { HERO_SLIDES } from "../data/media";
+import { SITE_INFO } from "../constants/site";
 ---
 
 <section class="hero">
@@ -11,7 +12,7 @@ import { HERO_SLIDES } from "../data/media";
         <Image
           class:list={["hero__image", "image", { "is-active": index === 0 }]}
           src={src}
-          alt=""
+          alt={index === 0 ? `${SITE_INFO.title}のメインビジュアル` : ""}
           loading={index === 0 ? "eager" : "lazy"}
           fetchpriority={index === 0 ? "high" : "low"}
           widths={[960, 1440, 1920]}

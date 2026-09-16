@@ -13,7 +13,21 @@ export default defineConfig({
         'simple-icons': ['instagram', 'line'],
       },
     }),
-    sitemap(),
+    sitemap({
+      serialize(item) {
+        const pathname = new URL(item.url).pathname.replace(/\/+$/, "") || "/";
+
+        if (pathname === "/") {
+          return { ...item, priority: 1, changefreq: "weekly" };
+        }
+
+        if (pathname === "/recruit") {
+          return { ...item, priority: 0.9, changefreq: "weekly" };
+        }
+
+        return { ...item, priority: 0.7, changefreq: "monthly" };
+      },
+    }),
   ],
   vite: {
     css: {

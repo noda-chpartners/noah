@@ -4,7 +4,14 @@ import '../styles/global.scss';
 
 import { SITE_ASSETS, SITE_INFO } from '../constants/site';
 import { LOADER_STORAGE_KEY } from '../constants/session';
-import { buildCanonical, buildJsonLd, buildPageTitle, ogImageUrl } from '../lib/seo';
+import {
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  buildCanonical,
+  buildJsonLd,
+  buildPageTitle,
+  ogImageUrl,
+} from '../lib/seo';
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -18,8 +25,13 @@ interface Props {
 const { title, description = SITE_INFO.description } = Astro.props;
 const pageTitle = buildPageTitle(title);
 const canonical = buildCanonical(Astro.url.pathname);
-const ogType = canonical === `${SITE_INFO.url}/` ? "website" : "article";
-const jsonLd = buildJsonLd({ title: pageTitle, description, canonical });
+const ogType = "website";
+const jsonLd = buildJsonLd({
+  title: pageTitle,
+  description,
+  canonical,
+  pathname: Astro.url.pathname,
+});
 ---
 
 <html lang="ja">
@@ -43,11 +55,15 @@ const jsonLd = buildJsonLd({ title: pageTitle, description, canonical });
 		<meta property="og:url" content={canonical} />
 		<meta property="og:image" content={ogImageUrl} />
 		<meta property="og:image:alt" content={`${SITE_INFO.title}のOGP画像`} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+		<meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
+		<meta name="twitter:image:alt" content={`${SITE_INFO.title}のOGP画像`} />
 
 		<title>{pageTitle}</title>
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />

@@ -5,9 +5,10 @@ import About from "../components/About.astro";
 import Service from "../components/Service.astro";
 import Company from "../components/Company.astro";
 import Contact from "../components/Contact.astro";
+import { PAGE_SEO } from "../data/content";
 ---
 
-<BaseLayout>
+<BaseLayout description={PAGE_SEO.home.description}>
 	<Hero />
 	<About />
 	<Service />

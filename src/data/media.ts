@@ -22,8 +22,9 @@ import eventTogether from "../assets/eventGallery/632021853884121548.jpg";
 
 export const HERO_SLIDES: ImageMetadata[] = [
   heroImage,
-  eventBbq,
   eventTogether,
+  eventBbq,
+  galleryTeam,
   eventSports,
   eventTrip,
 ];

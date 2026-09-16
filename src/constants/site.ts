@@ -5,7 +5,7 @@ export const SITE_INFO = {
   title: "株式会社Noah",
   tagline: "挑戦する人を、未来へ運ぶ",
   description:
-    "株式会社Noahは、インサイドセールス、WEBマーケティング、動画編集、コンサルティングを通じて、事業の成長と人の挑戦を同時に支える会社です。東京都豊島区。",
+    "株式会社Noahは東京都豊島区池袋の会社です。WEBマーケティング、インサイドセールス、動画編集、コンサルティングを通じて、事業の成長と人の挑戦を同時に支えます。",
   url: SITE_URL,
 } as const;
 
@@ -69,7 +69,7 @@ export const COMPANY_INFO = {
   address: `${ADDRESS_REGION}${ADDRESS_LOCALITY}${ADDRESS_STREET}`,
   president: "佐々木 遥",
   tel: "070-6664-5375",
-  telLink: "+0817066645375",
+  telLink: "+817066645375",
   telephone: "+81-70-6664-5375",
   business: [
     { name: "WEBマーケティング事業" },
