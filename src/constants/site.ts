@@ -22,7 +22,7 @@ export const NAV_ITEMS = [
   { href: "#service", label: "SERVICE" },
   { href: "#company", label: "COMPANY" },
   { href: "/recruit", label: "RECRUIT" },
-  { href: "/contact", label: "CONTACT" },
+  { href: "#contact", label: "CONTACT" },
 ] as const;
 
 export const ABOUT_PAGES = [
