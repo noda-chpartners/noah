@@ -18,6 +18,18 @@ html.is-awaiting-loader body {
   overflow: hidden;
 }
 
+html.is-awaiting-loader:not(.is-loader-exiting) {
+  .header,
+  main,
+  .footer {
+    visibility: hidden;
+  }
+
+  .marquee__track {
+    animation: none;
+  }
+}
+
 body {
   background-color: $c-white;
   color: $c-base;

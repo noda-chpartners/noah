@@ -1,7 +1,5 @@
-import gsap from "gsap";
 import { LOADER_STORAGE_KEY } from "../constants/session";
 import { prefersReducedMotion } from "./runtime";
-import lenis from "./lenis";
 
 const reduced = prefersReducedMotion();
 
@@ -11,18 +9,37 @@ if ("scrollRestoration" in history) {
 
 const pinTop = () => {
   window.scrollTo(0, 0);
-  lenis.scrollTo(0, { immediate: true });
 };
 
-const markReady = () => {
-  pinTop();
-  document.documentElement.classList.remove("is-awaiting-loader");
-  document.documentElement.classList.add("is-ready");
-  document.getElementById("loader")?.setAttribute("aria-hidden", "true");
-  window.dispatchEvent(new Event("noah:ready"));
-  pinTop();
-  lenis.start();
-};
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+
+const easeInOutQuad = (t: number) =>
+  t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+
+const animateCount = (el: HTMLElement, duration: number) =>
+  new Promise<void>((resolve) => {
+    const t0 = performance.now();
+    let last = "";
+
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const text = String(Math.round(easeInOutQuad(t) * 100)).padStart(3, "0");
+      if (text !== last) {
+        last = text;
+        el.textContent = text;
+      }
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        resolve();
+      }
+    };
+
+    requestAnimationFrame(tick);
+  });
 
 const persist = () => {
   try {
@@ -32,7 +49,16 @@ const persist = () => {
   }
 };
 
-const play = () => {
+const markReady = () => {
+  const root = document.documentElement;
+  root.classList.remove("is-awaiting-loader", "is-loader-exiting");
+  root.classList.add("is-ready");
+  document.getElementById("loader")?.setAttribute("aria-hidden", "true");
+  pinTop();
+  window.dispatchEvent(new Event("noah:ready"));
+};
+
+const play = async () => {
   const loader = document.getElementById("loader");
   if (!loader) {
     persist();
@@ -41,14 +67,9 @@ const play = () => {
   }
 
   pinTop();
-  lenis.stop();
+  loader.classList.add("is-playing");
 
   const count = loader.querySelector<HTMLElement>(".loader__count");
-  const progress = loader.querySelector<HTMLElement>(".loader__progress");
-  const brand = loader.querySelector<HTMLElement>(".loader__brand");
-  const label = loader.querySelector<HTMLElement>(".loader__label");
-  const counter = { val: 0 };
-
   const fallback = window.setTimeout(() => {
     if (!document.documentElement.classList.contains("is-ready")) {
       persist();
@@ -56,45 +77,17 @@ const play = () => {
     }
   }, 5000);
 
-  gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
+  await wait(200);
+  if (count) await animateCount(count, 1350);
+  await wait(120);
 
-  gsap
-    .timeline({
-      defaults: { ease: "power2.out" },
-      onComplete: () => {
-        window.clearTimeout(fallback);
-        persist();
-        markReady();
-      },
-    })
-    .from(label, { opacity: 0, y: 12, duration: 0.45 }, 0)
-    .from(brand, { opacity: 0, y: 18, duration: 0.65 }, 0.08)
-    .from(count, { opacity: 0, duration: 0.4 }, 0.12)
-    .to(
-      counter,
-      {
-        val: 100,
-        duration: 1.35,
-        ease: "power1.inOut",
-        onUpdate: () => {
-          if (count) {
-            count.textContent = String(Math.round(counter.val)).padStart(3, "0");
-          }
-        },
-      },
-      0.2,
-    )
-    .to(progress, { scaleX: 1, duration: 1.35, ease: "power1.inOut" }, 0.2)
-    .to(
-      loader,
-      {
-        yPercent: -100,
-        duration: 0.85,
-        ease: "power3.inOut",
-        onStart: () => window.dispatchEvent(new Event("noah:intro")),
-      },
-      "+=0.12",
-    );
+  document.documentElement.classList.add("is-loader-exiting");
+  window.dispatchEvent(new Event("noah:intro"));
+  await wait(850);
+
+  window.clearTimeout(fallback);
+  persist();
+  markReady();
 };
 
 if (reduced) {

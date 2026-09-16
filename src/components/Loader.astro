@@ -8,8 +8,10 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
   <div class="loader__brand">
     <Image
       class="loader__logo image"
-        src={SITE_ASSETS.logo.mark}
+      src={SITE_ASSETS.logo.mark}
       alt={SITE_INFO.title}
+      loading="eager"
+      fetchpriority="high"
     />
   </div>
   <div class="loader__meta">
@@ -35,6 +37,9 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
     overflow: hidden;
     pointer-events: none;
     visibility: hidden;
+    contain: paint;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
 
     :global(html.is-awaiting-loader) & {
       visibility: visible;
@@ -44,6 +49,11 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
     :global(html.is-ready) & {
       visibility: hidden;
       pointer-events: none;
+    }
+
+    :global(html.is-loader-exiting) & {
+      animation: loader-exit 0.85s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+      will-change: transform;
     }
 
     &__label {
@@ -83,6 +93,31 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
       font-size: 0.72rem;
       font-weight: 300;
       letter-spacing: 0.28em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    :global(html.is-awaiting-loader) & {
+      &__label,
+      &__brand,
+      &__count {
+        opacity: 0;
+      }
+
+      &__label {
+        animation: loader-rise 0.45s ease-out both;
+      }
+
+      &__brand {
+        animation: loader-rise-brand 0.65s ease-out 0.08s both;
+      }
+
+      &__count {
+        animation: loader-fade 0.4s ease-out 0.12s both;
+      }
+    }
+
+    :global(html.is-awaiting-loader) &.is-playing &__progress {
+      animation: loader-progress 1.35s ease-in-out 0.2s both;
     }
   }
 
@@ -90,5 +125,70 @@ import { SITE_ASSETS, SITE_INFO } from "../constants/site";
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  @keyframes loader-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes loader-rise-brand {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes loader-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes loader-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes loader-exit {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -100%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.is-awaiting-loader) {
+      .loader__label,
+      .loader__brand,
+      .loader__count {
+        opacity: 1;
+        animation: none;
+      }
+    }
+
+    :global(html.is-awaiting-loader .loader.is-playing) .loader__progress,
+    :global(html.is-loader-exiting) .loader {
+      animation: none;
+    }
   }
 </style>

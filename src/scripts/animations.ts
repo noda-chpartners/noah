@@ -86,17 +86,12 @@ const playHeroSlideshow = (slides: HTMLElement[]) => {
   };
 };
 
-const playHero = () => {
+const playHeroCopy = () => {
   const hero = document.querySelector(".hero");
   if (!hero) return;
 
-  const slides = [...hero.querySelectorAll<HTMLElement>(".hero__image")];
   const catchCopy = hero.querySelector(".hero__catch");
   const subCopy = hero.querySelector(".hero__sub");
-
-  if (slides.length) {
-    playHeroSlideshow(slides);
-  }
 
   if (catchCopy) {
     gsap.fromTo(
@@ -113,6 +108,13 @@ const playHero = () => {
       { y: 0, opacity: 1, duration: 1.05, delay: 0.4, ease: "power3.out" },
     );
   }
+};
+
+const playHeroMedia = () => {
+  const slides = [
+    ...document.querySelectorAll<HTMLElement>(".hero__image"),
+  ];
+  if (slides.length) playHeroSlideshow(slides);
 };
 
 const once = (trigger: Element, start = "top 85%") => ({
@@ -192,33 +194,47 @@ const initReveals = () => {
 };
 
 let heroPlayed = false;
+let slideshowStarted = false;
 
 const bootHero = () => {
   if (heroPlayed || prefersReducedMotion()) return;
   heroPlayed = true;
-  playHero();
+  playHeroCopy();
+};
+
+const bootSlideshow = () => {
+  if (slideshowStarted || prefersReducedMotion()) return;
+  slideshowStarted = true;
+  playHeroMedia();
 };
 
 const bootReveals = () => {
   if (prefersReducedMotion()) return;
   initReveals();
-  ScrollTrigger.refresh();
+  requestAnimationFrame(() => ScrollTrigger.refresh());
 };
 
 if (document.documentElement.classList.contains("is-ready")) {
   bootHero();
+  bootSlideshow();
   bootReveals();
 } else {
   window.addEventListener("noah:intro", bootHero, { once: true });
-  window.addEventListener("noah:ready", () => {
-    bootHero();
-    bootReveals();
-  }, { once: true });
+  window.addEventListener(
+    "noah:ready",
+    () => {
+      bootHero();
+      bootSlideshow();
+      bootReveals();
+    },
+    { once: true },
+  );
 }
 
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
     stopHeroSlideshow?.();
     heroPlayed = false;
+    slideshowStarted = false;
   });
 }

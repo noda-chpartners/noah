@@ -12,7 +12,7 @@ import { HERO_SLIDES } from "../data/media";
           class:list={["hero__image", "image", { "is-active": index === 0 }]}
           src={src}
           alt=""
-          loading="eager"
+          loading={index === 0 ? "eager" : "lazy"}
           fetchpriority={index === 0 ? "high" : "low"}
           widths={[960, 1440, 1920]}
           sizes="100vw"

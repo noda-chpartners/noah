@@ -9,13 +9,30 @@ const lenis = new Lenis({
   },
 });
 
-if (location.hash) {
-  requestAnimationFrame(() => {
-    const target = document.querySelector(location.hash);
-    if (target instanceof HTMLElement) {
-      lenis.scrollTo(target, { offset: SCROLL_OFFSET, immediate: true });
-    }
-  });
+if (document.documentElement.classList.contains("is-awaiting-loader")) {
+  lenis.stop();
+}
+
+window.addEventListener(
+  "noah:ready",
+  () => {
+    requestAnimationFrame(() => lenis.start());
+  },
+  { once: true },
+);
+
+const scrollToHash = () => {
+  if (!location.hash) return;
+  const target = document.querySelector(location.hash);
+  if (target instanceof HTMLElement) {
+    lenis.scrollTo(target, { offset: SCROLL_OFFSET, immediate: true });
+  }
+};
+
+if (document.documentElement.classList.contains("is-awaiting-loader")) {
+  window.addEventListener("noah:ready", scrollToHash, { once: true });
+} else {
+  requestAnimationFrame(scrollToHash);
 }
 
 export default lenis;
