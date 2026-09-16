@@ -1,8 +1,9 @@
 import gsap from "gsap";
+import { LOADER_STORAGE_KEY } from "../constants/session";
+import { prefersReducedMotion } from "./runtime";
 import lenis from "./lenis";
 
-const LOADER_KEY = "noah-loader";
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduced = prefersReducedMotion();
 
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
@@ -25,7 +26,7 @@ const markReady = () => {
 
 const persist = () => {
   try {
-    sessionStorage.setItem(LOADER_KEY, "1");
+    sessionStorage.setItem(LOADER_STORAGE_KEY, "1");
   } catch {
     // ignore quota / private mode
   }
@@ -84,7 +85,16 @@ const play = () => {
       0.2,
     )
     .to(progress, { scaleX: 1, duration: 1.35, ease: "power1.inOut" }, 0.2)
-    .to(loader, { yPercent: -100, duration: 0.85, ease: "power3.inOut" }, "+=0.12");
+    .to(
+      loader,
+      {
+        yPercent: -100,
+        duration: 0.85,
+        ease: "power3.inOut",
+        onStart: () => window.dispatchEvent(new Event("noah:intro")),
+      },
+      "+=0.12",
+    );
 };
 
 if (reduced) {

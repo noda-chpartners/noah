@@ -1,17 +1,20 @@
 ---
 import { COMPANY_INFO } from "../constants/site";
+import { SECTION } from "../data/content";
+import EdHead from "./EdHead.astro";
 ---
 
 <section class="section contact" id="contact">
   <div class="contact__panel">
     <div class="section__inner">
-      <header class="ed-head contact__head">
-        <p class="ed-label">( Get in touch )</p>
-        <h2 class="ed-title js-shuffle" data-shuffle="view">Contact</h2>
-      </header>
+      <EdHead
+        class="contact__head"
+        label={SECTION.contact.label}
+        title={SECTION.contact.title}
+      />
 
       <div class="contact__body">
-        <p class="contact__note">お気軽にお問い合わせください。</p>
+        <p class="contact__note">{SECTION.contact.note}</p>
 
         <div class="contact__actions">
           <a class="ed-button" href="/contact">
@@ -46,7 +49,7 @@ import { COMPANY_INFO } from "../constants/site";
       }
     }
 
-    &__head {
+    :global(.contact__head) {
       margin-bottom: 48px;
 
       @include tab {

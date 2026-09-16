@@ -1,18 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import heroImage from "../assets/images/hero.png";
-import service01 from "../assets/service/service01.png";
-import service02 from "../assets/service/service02.png";
-import service03 from "../assets/service/service03.png";
-import service04 from "../assets/service/service04.png";
-
-const SLIDES = [heroImage, service01, service02, service03, service04];
+import { HERO } from "../data/content";
+import { HERO_SLIDES } from "../data/media";
 ---
 
 <section class="hero">
   <div class="hero__media">
     {
-      SLIDES.map((src, index) => (
+      HERO_SLIDES.map((src, index) => (
         <Image
           class:list={["hero__image", "image", { "is-active": index === 0 }]}
           src={src}
@@ -28,8 +23,8 @@ const SLIDES = [heroImage, service01, service02, service03, service04];
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="hero__content">
     <div class="hero__copy">
-      <p class="hero__catch">HEAD OUT.</p>
-      <p class="hero__sub">出発しよう。</p>
+      <p class="hero__catch">{HERO.catch}</p>
+      <p class="hero__sub">{HERO.sub}</p>
     </div>
   </div>
 </section>
@@ -88,6 +83,7 @@ const SLIDES = [heroImage, service01, service02, service03, service04];
       line-height: 1.1;
       letter-spacing: 0.08em;
       white-space: nowrap;
+      opacity: 0;
     }
 
     &__sub {
@@ -98,6 +94,14 @@ const SLIDES = [heroImage, service01, service02, service03, service04];
       font-weight: 400;
       letter-spacing: 0.28em;
       line-height: 1.6;
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &__catch,
+      &__sub {
+        opacity: 1;
+      }
     }
   }
 

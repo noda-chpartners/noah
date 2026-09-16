@@ -1,18 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AboutSubnav from "../components/AboutSubnav.astro";
-import { PHILOSOPHY } from "../data/content";
+import AboutNav from "../components/AboutNav.astro";
+import EdHead from "../components/EdHead.astro";
+import { PAGE_SEO, PHILOSOPHY } from "../data/content";
 
 const sideItems = [PHILOSOPHY.mission, PHILOSOPHY.value];
 ---
 
-<BaseLayout title="企業理念">
+<BaseLayout title={PAGE_SEO.philosophy.title} description={PAGE_SEO.philosophy.description}>
   <section class="section page philosophy">
     <div class="section__inner">
-      <header class="ed-head">
-        <p class="ed-label">( {PHILOSOPHY.label} )</p>
-        <h1 class="ed-title js-shuffle" data-shuffle="view">{PHILOSOPHY.title}</h1>
-      </header>
+      <EdHead as="h1" label={PHILOSOPHY.label} title={PHILOSOPHY.title} />
 
       <p class="philosophy__lead page-block">{PHILOSOPHY.lead}</p>
 
@@ -38,7 +36,7 @@ const sideItems = [PHILOSOPHY.mission, PHILOSOPHY.value];
         }
       </div>
 
-      <AboutSubnav />
+      <AboutNav variant="subnav" />
     </div>
   </section>
 </BaseLayout>

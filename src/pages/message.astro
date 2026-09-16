@@ -1,17 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AboutSubnav from "../components/AboutSubnav.astro";
-import { MESSAGE } from "../data/content";
+import AboutNav from "../components/AboutNav.astro";
+import EdHead from "../components/EdHead.astro";
+import { PAGE_SEO, MESSAGE } from "../data/content";
 import { COMPANY_INFO } from "../constants/site";
 ---
 
-<BaseLayout title="代表者挨拶">
+<BaseLayout title={PAGE_SEO.message.title} description={PAGE_SEO.message.description}>
   <section class="section page message">
     <div class="section__inner">
-      <header class="ed-head">
-        <p class="ed-label">( {MESSAGE.label} )</p>
-        <h1 class="ed-title js-shuffle" data-shuffle="view">{MESSAGE.title}</h1>
-      </header>
+      <EdHead as="h1" label={MESSAGE.label} title={MESSAGE.title} />
 
       <article class="message__body page-block">
         <div class="message__meta">
@@ -21,7 +19,7 @@ import { COMPANY_INFO } from "../constants/site";
         <p class="message__text">{MESSAGE.text}</p>
       </article>
 
-      <AboutSubnav />
+      <AboutNav variant="subnav" />
     </div>
   </section>
 </BaseLayout>

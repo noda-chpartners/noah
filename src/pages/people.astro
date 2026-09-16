@@ -1,11 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Gallery from "../components/Gallery.astro";
-import AboutSubnav from "../components/AboutSubnav.astro";
+import AboutNav from "../components/AboutNav.astro";
+import { PAGE_SEO } from "../data/content";
 ---
 
-<BaseLayout title="社員紹介">
-  <Gallery asPage>
-    <AboutSubnav />
+<BaseLayout title={PAGE_SEO.people.title} description={PAGE_SEO.people.description}>
+  <Gallery>
+    <AboutNav variant="subnav" />
   </Gallery>
 </BaseLayout>

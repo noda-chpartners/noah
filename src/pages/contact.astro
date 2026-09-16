@@ -1,17 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactForm from "../components/ContactForm.astro";
+import EdHead from "../components/EdHead.astro";
 import SnsList from "../components/SnsList.astro";
 import { COMPANY_INFO } from "../constants/site";
+import { PAGE_SEO, SECTION } from "../data/content";
 ---
 
-<BaseLayout title="お問い合わせ">
+<BaseLayout title={PAGE_SEO.contact.title} description={PAGE_SEO.contact.description}>
   <section class="section page contact-page">
     <div class="section__inner">
-      <header class="ed-head">
-        <p class="ed-label">( Get in touch )</p>
-        <h1 class="ed-title js-shuffle" data-shuffle="view">Contact</h1>
-      </header>
+      <EdHead as="h1" label={SECTION.contact.label} title={SECTION.contact.title} />
 
       <div class="contact-page__layout">
         <div class="contact-page__info page-block">

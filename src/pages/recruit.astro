@@ -1,7 +1,9 @@
 ---
 import { getImage } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { RECRUIT } from "../data/content";
+import EdHead from "../components/EdHead.astro";
+import { PAGE_SEO, RECRUIT } from "../data/content";
+import { padIndex } from "../constants/site";
 import recruitBg from "../assets/gallery/gallery03.jpg";
 
 const bg = await getImage({
@@ -11,16 +13,13 @@ const bg = await getImage({
 });
 ---
 
-<BaseLayout title="採用情報">
+<BaseLayout title={PAGE_SEO.recruit.title} description={PAGE_SEO.recruit.description}>
   <section
     class="section page recruit"
     style={`--recruit-image: url("${bg.src}")`}
   >
     <div class="section__inner">
-      <header class="ed-head">
-        <p class="ed-label">( {RECRUIT.label} )</p>
-        <h1 class="ed-title js-shuffle" data-shuffle="view">{RECRUIT.title}</h1>
-      </header>
+      <EdHead as="h1" label={RECRUIT.label} title={RECRUIT.title} />
 
       <div class="recruit__intro page-block">
         <p class="recruit__lead">{RECRUIT.lead}</p>
@@ -31,7 +30,7 @@ const bg = await getImage({
         {
           RECRUIT.jobs.map((job, index) => (
             <li class="recruit__item page-block" id={job.id}>
-              <p class="ed-label">( {String(index + 1).padStart(2, "0")} )</p>
+              <p class="ed-label">( {padIndex(index + 1)} )</p>
               <p class="recruit__tag">{job.tag}</p>
               <h2 class="recruit__title">{job.title}</h2>
               <p class="recruit__description">{job.description}</p>
@@ -48,7 +47,7 @@ const bg = await getImage({
               </dl>
 
               <p class="recruit__cta">
-                <a class="ed-button" href="/contact?type=recruit">応募する</a>
+                <a class="ed-button" href={RECRUIT.applyHref}>応募する</a>
               </p>
             </li>
           ))
@@ -59,7 +58,7 @@ const bg = await getImage({
         <p class="ed-label">( Entry )</p>
         <p class="recruit__foot_text">まずはカジュアルにお話しましょう。</p>
         <p class="recruit__cta">
-          <a class="ed-button" href="/contact?type=recruit">お問い合わせへ</a>
+          <a class="ed-button" href={RECRUIT.applyHref}>お問い合わせへ</a>
         </p>
       </div>
     </div>
@@ -185,6 +184,12 @@ const bg = await getImage({
       font-weight: 300;
       letter-spacing: 0.1em;
     }
+
+    &__cta {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   :global(.recruit .ed-label) {
@@ -194,11 +199,5 @@ const bg = await getImage({
   :global(.recruit .ed-button:hover) {
     background-color: $c-white;
     color: $c-base;
-  }
-
-  :global(.recruit__cta) {
-    display: flex;
-    justify-content: center;
-    width: 100%;
   }
 </style>

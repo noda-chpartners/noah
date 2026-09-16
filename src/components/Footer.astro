@@ -1,11 +1,10 @@
 ---
-import { Image } from 'astro:assets';
-import { SITE_INFO, SITE_ASSETS, NAV_ITEMS, ABOUT_PAGES, COMPANY_INFO, resolveNavHref } from '../constants/site';
-import SnsList from './SnsList.astro';
+import { Image } from "astro:assets";
+import { SITE_INFO, SITE_ASSETS, FOOTER_NAV, COMPANY_INFO, resolveNavHref } from "../constants/site";
+import SnsList from "./SnsList.astro";
 
 const year = new Date().getFullYear();
 const pathname = Astro.url.pathname;
-const footerNav = [...NAV_ITEMS.slice(0, 1), ...ABOUT_PAGES, ...NAV_ITEMS.slice(1)];
 ---
 
 <footer class="footer">
@@ -25,7 +24,7 @@ const footerNav = [...NAV_ITEMS.slice(0, 1), ...ABOUT_PAGES, ...NAV_ITEMS.slice(
         <p class="ed-label footer__label">( Menu )</p>
         <ul class="footer__nav">
           {
-            footerNav.map((item) => (
+            FOOTER_NAV.map((item) => (
               <li>
                 <a class="footer__nav_link link" href={resolveNavHref(item.href, pathname)}>
                   {item.label}
@@ -61,9 +60,9 @@ const footerNav = [...NAV_ITEMS.slice(0, 1), ...ABOUT_PAGES, ...NAV_ITEMS.slice(
 </footer>
 
 <script>
-  import lenis from '../scripts/lenis';
+  import lenis from "../scripts/lenis";
 
-  document.getElementById('footer-totop')?.addEventListener('click', () => lenis.scrollTo(0));
+  document.getElementById("footer-totop")?.addEventListener("click", () => lenis.scrollTo(0));
 </script>
 
 <style lang="scss">
@@ -99,11 +98,7 @@ const footerNav = [...NAV_ITEMS.slice(0, 1), ...ABOUT_PAGES, ...NAV_ITEMS.slice(
 
     &__logo {
       display: block;
-      width: 52px;
-
-      @include pc {
-        width: 64px;
-      }
+      width: var(--logo-width);
     }
 
     &__totop {

@@ -1,3 +1,11 @@
+:root {
+  --logo-width: 52px;
+
+  @include pc {
+    --logo-width: 64px;
+  }
+}
+
 html {
   scroll-behavior: auto;
   scroll-padding-top: 80px;
@@ -77,13 +85,6 @@ body.is-nav-open {
     }
   }
 
-  &__index {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    opacity: 0.38;
-  }
-
   &__title {
     margin-bottom: 36px;
     font-size: clamp(1.35rem, 2.2vw, 1.75rem);
@@ -100,15 +101,6 @@ body.is-nav-open {
   &__head &__title {
     margin-bottom: 0;
   }
-}
-
-.section--dark .section__head {
-  border-bottom-color: $c-line-light;
-}
-
-.section--dark .section__title,
-.section--dark .section__index {
-  color: $c-white;
 }
 
 // エディトリアル系（SERVICE 以降）
@@ -189,10 +181,4 @@ body.is-nav-open {
   &:hover {
     opacity: 0.55;
   }
-}
-
-.recruit__cta {
-  display: flex;
-  justify-content: center;
-  width: 100%;
 }

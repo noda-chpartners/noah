@@ -1,52 +1,19 @@
 ---
 import { Image } from "astro:assets";
 import { PEOPLE } from "../data/content";
-import galleryTeam from "../assets/gallery/gallery03.jpg";
-import galleryWork from "../assets/gallery/gallery04.jpg";
-import galleryCafe from "../assets/gallery/gallery09.jpg";
-import galleryJenga from "../assets/gallery/gallery013.jpg";
-import galleryTalk from "../assets/gallery/gallery014.jpg";
-import galleryLounge from "../assets/gallery/gallery010.jpg";
-import gallerySofa from "../assets/gallery/gallery08.jpg";
-import galleryGather from "../assets/gallery/gallery07.jpg";
-import galleryPeace from "../assets/gallery/gallery06.jpg";
-import galleryChat from "../assets/gallery/gallery011.jpg";
-import galleryPortrait from "../assets/gallery/gallery012.jpg";
-
-interface Props {
-  asPage?: boolean;
-}
-
-const { asPage = false } = Astro.props;
-const Heading = asPage ? "h1" : "h2";
-
-const PHOTOS = [
-  { src: galleryTeam, alt: "Noahのメンバー", area: "team" },
-  { src: galleryWork, alt: "打ち合わせの様子", area: "work" },
-  { src: galleryCafe, alt: "カフェスペースでの作業", area: "cafe" },
-  { src: galleryJenga, alt: "オフィスでの交流", area: "play" },
-  { src: galleryTalk, alt: "1対1の対話", area: "talk" },
-  { src: galleryLounge, alt: "ラウンジでの作業", area: "lounge" },
-  { src: gallerySofa, alt: "ソファでの会話", area: "sofa" },
-  { src: galleryGather, alt: "社内の食事会", area: "gather" },
-  { src: galleryPortrait, alt: "メンバーのポートレート", area: "portrait" },
-  { src: galleryPeace, alt: "メンバーのひとコマ", area: "peace" },
-  { src: galleryChat, alt: "ソファでの歓談", area: "chat" },
-];
+import { GALLERY_PHOTOS } from "../data/media";
+import EdHead from "./EdHead.astro";
 ---
 
-<section class:list={["section", "gallery", { page: asPage }]} id="people">
+<section class="section gallery page" id="people">
   <div class="section__inner">
-    <header class="ed-head">
-      <p class="ed-label">( {PEOPLE.label} )</p>
-      <Heading class="ed-title js-shuffle" data-shuffle="view">{PEOPLE.title}</Heading>
-    </header>
+    <EdHead as="h1" label={PEOPLE.label} title={PEOPLE.title} />
     <p class="gallery__lead">{PEOPLE.lead}</p>
-    {asPage && <p class="gallery__text">{PEOPLE.text}</p>}
+    <p class="gallery__text">{PEOPLE.text}</p>
 
     <ul class="gallery__grid">
       {
-        PHOTOS.map((photo) => (
+        GALLERY_PHOTOS.map((photo) => (
           <li class={`gallery__item gallery__item--${photo.area}`}>
             <Image
               class="gallery__image"
@@ -65,11 +32,7 @@ const PHOTOS = [
 
 <style lang="scss">
   .gallery {
-    &:not(.page) {
-      border-top: 1px solid $c-line;
-    }
-
-    .ed-head {
+    :global(.ed-head) {
       margin-bottom: 16px;
 
       @include tab {
@@ -96,14 +59,6 @@ const PHOTOS = [
 
       @include tab {
         margin-bottom: 28px;
-      }
-    }
-
-    &:not(.page) &__lead {
-      margin-bottom: 40px;
-
-      @include tab {
-        margin-bottom: 56px;
       }
     }
 

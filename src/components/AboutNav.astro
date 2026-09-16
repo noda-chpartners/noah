@@ -1,0 +1,91 @@
+---
+import { ABOUT_PAGES, normalizePathname } from "../constants/site";
+
+interface Props {
+  variant?: "section" | "subnav";
+}
+
+const { variant = "section" } = Astro.props;
+const pathname = normalizePathname(Astro.url.pathname);
+const isSubnav = variant === "subnav";
+---
+
+<nav
+  class:list={isSubnav ? ["about-subnav", "page-block"] : ["about__links"]}
+  aria-label={isSubnav ? "ABOUT関連ページ" : "ABOUT詳細"}
+>
+  {
+    ABOUT_PAGES.map((page) => {
+      const current = isSubnav && pathname === page.href;
+
+      return (
+        <div class:list={[isSubnav ? "about-subnav__item" : "about__item"]}>
+          <a
+            class:list={["ed-button", { "is-current": current }]}
+            href={page.href}
+            aria-current={current ? "page" : undefined}
+          >
+            {page.label}
+          </a>
+          <p class={isSubnav ? "about-subnav__caption" : "about__caption"}>
+            {page.caption}
+          </p>
+        </div>
+      );
+    })
+  }
+</nav>
+
+<style lang="scss">
+  .about__links,
+  .about-subnav {
+    display: grid;
+    gap: 24px;
+    justify-items: center;
+
+    @include tab {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px 20px;
+    }
+  }
+
+  .about__links {
+    @include tab {
+      align-items: start;
+    }
+  }
+
+  .about-subnav {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid $c-line;
+
+    @include tab {
+      margin-top: 72px;
+      padding-top: 48px;
+    }
+  }
+
+  .about__item,
+  .about-subnav__item {
+    display: grid;
+    gap: 12px;
+    justify-items: center;
+    width: 100%;
+  }
+
+  .about__caption,
+  .about-subnav__caption {
+    color: $c-muted;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  .about-subnav :global(.ed-button.is-current) {
+    background-color: $c-base;
+    color: $c-white;
+    pointer-events: none;
+  }
+</style>

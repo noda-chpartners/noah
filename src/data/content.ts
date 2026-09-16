@@ -1,8 +1,23 @@
-import insideSales from '../assets/service/service01.png';
-import webMarketing from '../assets/service/service02.png';
-import videoEditing from '../assets/service/service03.png';
-import consulting from '../assets/service/service04.png';
+import insideSales from "../assets/service/service01.png";
+import webMarketing from "../assets/service/service02.png";
+import videoEditing from "../assets/service/service03.png";
+import consulting from "../assets/service/service04.png";
 
+export const HERO = {
+  catch: "HEAD OUT.",
+  sub: "出発しよう。",
+} as const;
+
+export const SECTION = {
+  about: { title: "ABOUT" },
+  service: { label: "Our Service", title: "Service" },
+  company: { label: "Overview", title: "Company" },
+  contact: {
+    label: "Get in touch",
+    title: "Contact",
+    note: "お気軽にお問い合わせください。",
+  },
+} as const;
 
 export const ABOUT = {
   quote: "出発点は、いつも人。",
@@ -86,53 +101,68 @@ export const SERVICES = [
   },
 ] as const;
 
+const EMPLOYMENT = {
+  type: "正社員 / 業務委託",
+  location: "東京都豊島区（リモート相談可）",
+} as const;
+
+const JOB_COPY = {
+  "inside-sales":
+    "対話を設計し、商談につながる接点をつくる。見込み顧客との関係を、数字と温度感の両方で育てる仕事です。",
+  "web-marketing":
+    "認知から獲得まで、成果に直結するデジタル施策を設計・実行。見る人の行動が変わる導線をつくる仕事です。",
+  video:
+    "伝えたいことを、見て残る映像にする。ブランドの温度感を、テンポと余白で表現する仕事です。",
+  consulting:
+    "現場と並走しながら、成長のボトルネックを解きほぐす。机上の戦略ではなく、動ける形に落とす仕事です。",
+} as const satisfies Record<(typeof SERVICES)[number]["id"], string>;
+
 export const RECRUIT = {
   title: "Recruit",
   label: "Join us",
   lead: "一緒に挑戦する仲間を募集しています。",
   text: "会社や環境に人生を決められるのではなく、自分の力で選択肢を増やせる人を増やしたい。その想いに共感し、並走してくれる方を待っています。",
-  jobs: [
-    {
-      id: "inside-sales",
-      title: "インサイドセールス",
-      tag: "SALES",
-      type: "正社員 / 業務委託",
-      location: "東京都豊島区（リモート相談可）",
-      description:
-        "対話を設計し、商談につながる接点をつくる。見込み顧客との関係を、数字と温度感の両方で育てる仕事です。",
-    },
-    {
-      id: "web-marketing",
-      title: "WEBマーケティング",
-      tag: "DIGITAL",
-      type: "正社員 / 業務委託",
-      location: "東京都豊島区（リモート相談可）",
-      description:
-        "認知から獲得まで、成果に直結するデジタル施策を設計・実行。見る人の行動が変わる導線をつくる仕事です。",
-    },
-    {
-      id: "video",
-      title: "動画編集",
-      tag: "VISUAL",
-      type: "正社員 / 業務委託",
-      location: "東京都豊島区（リモート相談可）",
-      description:
-        "伝えたいことを、見て残る映像にする。ブランドの温度感を、テンポと余白で表現する仕事です。",
-    },
-    {
-      id: "consulting",
-      title: "コンサルティング",
-      tag: "GROWTH",
-      type: "正社員 / 業務委託",
-      location: "東京都豊島区（リモート相談可）",
-      description:
-        "現場と並走しながら、成長のボトルネックを解きほぐす。机上の戦略ではなく、動ける形に落とす仕事です。",
-    },
-  ],
-} as const;
+  applyHref: "/contact?type=recruit",
+  jobs: SERVICES.map((service) => ({
+    id: service.id,
+    title: service.title,
+    tag: service.tag,
+    type: EMPLOYMENT.type,
+    location: EMPLOYMENT.location,
+    description: JOB_COPY[service.id],
+  })),
+};
 
 export const CONTACT_TYPES = [
   { value: "service", label: "サービスについてのご相談" },
   { value: "recruit", label: "採用について" },
   { value: "other", label: "その他" },
 ] as const;
+
+export const PAGE_SEO = {
+  philosophy: {
+    title: "企業理念",
+    description:
+      "株式会社NoahのVISION・MISSION・VALUE。自分の人生を自分で選べる人を増やし、挑戦する人を未来へ運ぶための理念です。",
+  },
+  message: {
+    title: "代表者挨拶",
+    description:
+      "株式会社Noah 代表取締役 佐々木遥からのご挨拶。挑戦する人が自分の力で選択肢を増やせる社会を目指しています。",
+  },
+  people: {
+    title: "社員紹介",
+    description:
+      "株式会社Noahのメンバー紹介。仕事も余白も同じ温度で、挑戦する仲間の顔と日常の風景をお届けします。",
+  },
+  recruit: {
+    title: "採用情報",
+    description:
+      "株式会社Noahの採用情報。インサイドセールス、WEBマーケティング、動画編集、コンサルティングで一緒に挑戦する仲間を募集しています。",
+  },
+  contact: {
+    title: "お問い合わせ",
+    description:
+      "株式会社Noahへのお問い合わせ。サービスに関するご相談、採用についてのご質問など、お気軽にご連絡ください。",
+  },
+} as const;

@@ -3,6 +3,8 @@ import '../styles/reset.css';
 import '../styles/global.scss';
 
 import { SITE_ASSETS, SITE_INFO } from '../constants/site';
+import { LOADER_STORAGE_KEY } from '../constants/session';
+import { buildCanonical, buildJsonLd, buildPageTitle, ogImageUrl } from '../lib/seo';
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -10,10 +12,14 @@ import Loader from '../components/Loader.astro';
 
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE_INFO.title}` : SITE_INFO.title;
+const { title, description = SITE_INFO.description } = Astro.props;
+const pageTitle = buildPageTitle(title);
+const canonical = buildCanonical(Astro.url.pathname);
+const ogType = canonical === `${SITE_INFO.url}/` ? "website" : "article";
+const jsonLd = buildJsonLd({ title: pageTitle, description, canonical });
 ---
 
 <html lang="ja">
@@ -22,26 +28,43 @@ const pageTitle = title ? `${title} | ${SITE_INFO.title}` : SITE_INFO.title;
 		<link rel="icon" href={SITE_ASSETS.favicon} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-    <meta property="og:image" content={SITE_ASSETS.ogp} />
-		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#1c1d21" />
+		<meta name="robots" content="index,follow" />
+		<link rel="canonical" href={canonical} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Google Fonts の読み込み（例: Noto Sans JP） -->
+		<meta property="og:site_name" content={SITE_INFO.title} />
+		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:alt" content={`${SITE_INFO.title}のOGP画像`} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<title>{pageTitle}</title>
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
-    <script is:inline>
-      (() => {
-        try {
-          if (sessionStorage.getItem("noah-loader")) {
-            document.documentElement.classList.add("is-ready");
-          } else {
-            document.documentElement.classList.add("is-awaiting-loader");
-          }
-        } catch {
+    <script is:inline set:html={`(() => {
+      try {
+        if (sessionStorage.getItem(${JSON.stringify(LOADER_STORAGE_KEY)})) {
           document.documentElement.classList.add("is-ready");
+        } else {
+          document.documentElement.classList.add("is-awaiting-loader");
         }
-      })();
-    </script>
+      } catch {
+        document.documentElement.classList.add("is-ready");
+      }
+    })();`} />
 	</head>
 	<body>
     <Loader />
@@ -53,6 +76,7 @@ const pageTitle = title ? `${title} | ${SITE_INFO.title}` : SITE_INFO.title;
     <script>
       import "../scripts/lenis";
       import "../scripts/loader";
+      import "../scripts/nav";
       import "../scripts/animations";
       import "../scripts/shuffle-text";
     </script>

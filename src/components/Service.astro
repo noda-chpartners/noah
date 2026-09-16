@@ -1,14 +1,12 @@
 ---
 import { Image } from "astro:assets";
-import { SERVICES } from "../data/content";
+import { SECTION, SERVICES } from "../data/content";
+import EdHead from "./EdHead.astro";
 ---
 
 <section class="section service" id="service">
   <div class="section__inner">
-    <header class="ed-head">
-      <p class="ed-label">( Our Service )</p>
-      <h2 class="ed-title js-shuffle" data-shuffle="view">Service</h2>
-    </header>
+    <EdHead label={SECTION.service.label} title={SECTION.service.title} />
 
     <ul class="service__list">
       {

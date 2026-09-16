@@ -1,11 +1,10 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import lenis from "./lenis";
+import { prefersReducedMotion } from "./runtime";
 
 gsap.registerPlugin(ScrollTrigger);
 lenis.on("scroll", ScrollTrigger.update);
-
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let stopHeroSlideshow: (() => void) | undefined;
 
@@ -42,7 +41,7 @@ const playHeroSlideshow = (slides: HTMLElement[]) => {
         scale: 1.045,
         duration: HOLD + FADE,
         ease: "none",
-        overwrite: "none",
+        overwrite: false,
       },
     );
   };
@@ -116,6 +115,12 @@ const playHero = () => {
   }
 };
 
+const once = (trigger: Element, start = "top 85%") => ({
+  trigger,
+  start,
+  once: true,
+});
+
 const reveal = (elements: NodeListOf<Element> | Element[], extra: gsap.TweenVars = {}) => {
   elements.forEach((el) => {
     gsap.from(el, {
@@ -123,11 +128,7 @@ const reveal = (elements: NodeListOf<Element> | Element[], extra: gsap.TweenVars
       opacity: 0,
       duration: 1,
       ease: "power3.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 85%",
-        once: true,
-      },
+      scrollTrigger: once(el),
       ...extra,
     });
   });
@@ -147,11 +148,7 @@ const initReveals = () => {
       duration: 1,
       delay: Math.min(index * 0.06, 0.3),
       ease: "power3.out",
-      scrollTrigger: {
-        trigger: item,
-        start: "top 88%",
-        once: true,
-      },
+      scrollTrigger: once(item, "top 88%"),
     });
   });
 
@@ -165,11 +162,7 @@ const initReveals = () => {
         opacity: 0,
         duration: 1.1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: item,
-          start: "top 80%",
-          once: true,
-        },
+        scrollTrigger: once(item, "top 80%"),
       });
     }
 
@@ -180,11 +173,7 @@ const initReveals = () => {
         duration: 1,
         delay: 0.12,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: item,
-          start: "top 80%",
-          once: true,
-        },
+        scrollTrigger: once(item, "top 80%"),
       });
     }
   });
@@ -197,30 +186,39 @@ const initReveals = () => {
       duration: 0.7,
       stagger: 0.08,
       ease: "power3.out",
-      scrollTrigger: {
-        trigger: fields[0],
-        start: "top 85%",
-        once: true,
-      },
+      scrollTrigger: once(fields[0]),
     });
   }
 };
 
-const boot = () => {
-  if (reduced) return;
+let heroPlayed = false;
+
+const bootHero = () => {
+  if (heroPlayed || prefersReducedMotion()) return;
+  heroPlayed = true;
   playHero();
+};
+
+const bootReveals = () => {
+  if (prefersReducedMotion()) return;
   initReveals();
   ScrollTrigger.refresh();
 };
 
 if (document.documentElement.classList.contains("is-ready")) {
-  boot();
+  bootHero();
+  bootReveals();
 } else {
-  window.addEventListener("noah:ready", boot, { once: true });
+  window.addEventListener("noah:intro", bootHero, { once: true });
+  window.addEventListener("noah:ready", () => {
+    bootHero();
+    bootReveals();
+  }, { once: true });
 }
 
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
     stopHeroSlideshow?.();
+    heroPlayed = false;
   });
 }

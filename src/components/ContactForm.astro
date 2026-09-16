@@ -106,9 +106,11 @@ import { CONTACT_TYPES } from "../data/content";
   const typeField = document.getElementById("contact-type") as HTMLSelectElement | null;
 
   const type = new URLSearchParams(location.search).get("type");
-  const allowed = ["service", "recruit", "other"];
-  if (type && allowed.includes(type) && typeField) {
-    typeField.value = type;
+  if (type && typeField) {
+    const allowed = new Set(
+      [...typeField.options].map((option) => option.value).filter(Boolean),
+    );
+    if (allowed.has(type)) typeField.value = type;
   }
 
   const showError = (message: string) => {

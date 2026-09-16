@@ -5,27 +5,8 @@ const VIEW_THRESHOLD = 0.4;
 
 const targets = new Set<HTMLElement>();
 
-const initAll = () => {
-  document.querySelectorAll<HTMLElement>(".js-shuffle").forEach(initShuffleText);
-};
-
-const start = () => {
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(initAll);
-  } else {
-    initAll();
-  }
-};
-
-if (document.documentElement.classList.contains("is-ready")) {
-  start();
-} else {
-  window.addEventListener("noah:ready", start, { once: true });
-}
-
-const shouldLockWidth = (el: HTMLElement) => {
-  return getComputedStyle(el).display.includes("inline");
-};
+const shouldLockWidth = (el: HTMLElement) =>
+  getComputedStyle(el).display.includes("inline");
 
 const lockWidth = (el: HTMLElement) => {
   el.style.maxWidth = "100%";
@@ -40,10 +21,6 @@ const lockWidth = (el: HTMLElement) => {
 
   el.style.width = "100%";
   el.style.whiteSpace = "nowrap";
-};
-
-const relockAll = () => {
-  targets.forEach(lockWidth);
 };
 
 const bindHover = (el: HTMLElement, text: ShuffleText) => {
@@ -80,8 +57,28 @@ const initShuffleText = (el: HTMLElement) => {
   if (modes.includes("load")) text.start();
 };
 
+const initAll = () => {
+  document.querySelectorAll<HTMLElement>(".js-shuffle").forEach(initShuffleText);
+};
+
+const start = () => {
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(initAll);
+  } else {
+    initAll();
+  }
+};
+
+if (document.documentElement.classList.contains("is-ready")) {
+  start();
+} else {
+  window.addEventListener("noah:ready", start, { once: true });
+}
+
 let resizeTimer = 0;
 window.addEventListener("resize", () => {
   window.clearTimeout(resizeTimer);
-  resizeTimer = window.setTimeout(relockAll, 120);
+  resizeTimer = window.setTimeout(() => {
+    targets.forEach(lockWidth);
+  }, 120);
 });

@@ -1,5 +1,7 @@
 ---
-import { SITE_INFO, COMPANY_INFO } from "../constants/site";
+import { SITE_INFO, COMPANY_INFO, padIndex } from "../constants/site";
+import { SECTION } from "../data/content";
+import EdHead from "./EdHead.astro";
 
 const rows = [
   { label: "会社名", value: SITE_INFO.title },
@@ -11,10 +13,7 @@ const rows = [
 
 <section class="section company" id="company">
   <div class="section__inner">
-    <header class="ed-head">
-      <p class="ed-label">( Overview )</p>
-      <h2 class="ed-title js-shuffle" data-shuffle="view">Company</h2>
-    </header>
+    <EdHead label={SECTION.company.label} title={SECTION.company.title} />
 
     <div class="company__layout">
       <p class="company__lead">
@@ -45,7 +44,7 @@ const rows = [
               {
                 COMPANY_INFO.business.map((item, index) => (
                   <li class="company__business_item">
-                    <span class="ed-label">{String(index + 1).padStart(2, "0")}</span>
+                    <span class="ed-label">{padIndex(index + 1)}</span>
                     {item.name}
                   </li>
                 ))

@@ -1,26 +1,22 @@
 ---
 import { Image } from "astro:assets";
-import { SITE_INFO, SITE_ASSETS, NAV_ITEMS, resolveNavHref } from "../constants/site";
+import { SITE_INFO, SITE_ASSETS, NAV_ITEMS, isHomePath, resolveNavHref } from "../constants/site";
 
 const pathname = Astro.url.pathname;
+const LogoTag = isHomePath(pathname) ? "h1" : "p";
 ---
 
 <header class="header" id="header">
   <div class="header__backdrop" aria-hidden="true"></div>
-  <h1 class="header__logo">
-    <a class="header__logo_link" href="/">
+  <LogoTag class="header__logo">
+    <a class="header__logo_link" href="/" aria-label={`${SITE_INFO.title} トップへ`}>
       <Image
-        class="header__logo_image header__logo_image--white image"
+        class="header__logo_image image"
         src={SITE_ASSETS.logo.mark}
-        alt={`${SITE_INFO.title}ロゴ`}
-      />
-      <Image
-        class="header__logo_image header__logo_image--black image"
-        src={SITE_ASSETS.logo.mark}
-        alt=""
+        alt={SITE_INFO.title}
       />
     </a>
-  </h1>
+  </LogoTag>
 
   <button
     class="header__toggle"
@@ -53,26 +49,6 @@ const pathname = Astro.url.pathname;
     </ul>
   </nav>
 </header>
-
-<script>
-  const header = document.getElementById("header");
-  const toggle = header?.querySelector<HTMLButtonElement>(".header__toggle");
-  const navLinks = header?.querySelectorAll(".header__nav_link");
-
-  const setOpen = (open: boolean) => {
-    header?.classList.toggle("is-open", open);
-    toggle?.setAttribute("aria-expanded", String(open));
-    document.body.classList.toggle("is-nav-open", open);
-  };
-
-  toggle?.addEventListener("click", () => {
-    setOpen(!header?.classList.contains("is-open"));
-  });
-
-  navLinks?.forEach((link) => {
-    link.addEventListener("click", () => setOpen(false));
-  });
-</script>
 
 <style lang="scss">
   .header {
@@ -120,14 +96,10 @@ const pathname = Astro.url.pathname;
     }
 
     &__logo {
-      width: 52px;
+      width: var(--logo-width);
       flex-shrink: 0;
       position: relative;
       z-index: 2;
-
-      @include pc {
-        width: 64px;
-      }
     }
 
     &__logo_link {
@@ -247,9 +219,5 @@ const pathname = Astro.url.pathname;
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  :global(.header__logo_image--black) {
-    display: none;
   }
 </style>

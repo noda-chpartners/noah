@@ -1,0 +1,15 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  as?: "h1" | "h2";
+  class?: string;
+}
+
+const { label, title, as: Tag = "h2", class: className } = Astro.props;
+---
+
+<header class:list={["ed-head", className]}>
+  <p class="ed-label">( {label} )</p>
+  <Tag class="ed-title js-shuffle" data-shuffle="view">{title}</Tag>
+</header>

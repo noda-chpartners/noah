@@ -1,20 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import eventDinner from "../assets/eventGallery/631309317601755545.jpg";
-import eventBbq from "../assets/eventGallery/631309317735973394.jpg";
-import eventSports from "../assets/eventGallery/631309317752750676.jpg";
-import eventTrip from "../assets/eventGallery/631309318037963299.jpg";
-import galleryTeam from "../assets/gallery/gallery03.jpg";
-import galleryWork from "../assets/gallery/gallery04.jpg";
-
-const PHOTOS = [
-  { src: eventDinner, alt: "懇親会の様子" },
-  { src: galleryTeam, alt: "Noahのメンバー" },
-  { src: eventBbq, alt: "バーベキュー交流" },
-  { src: galleryWork, alt: "打ち合わせの様子" },
-  { src: eventSports, alt: "スポーツ交流" },
-  { src: eventTrip, alt: "合宿のひとコマ" },
-];
+import { MARQUEE_PHOTOS } from "../data/media";
 ---
 
 <div class="marquee" aria-hidden="true">
@@ -22,7 +8,7 @@ const PHOTOS = [
     {
       [0, 1].map((copy) => (
         <ul class="marquee__list">
-          {PHOTOS.map((photo) => (
+          {MARQUEE_PHOTOS.map((photo) => (
             <li class="marquee__item">
               <Image
                 class="marquee__image"

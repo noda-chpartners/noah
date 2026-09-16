@@ -1,13 +1,13 @@
 ---
-import { ABOUT } from "../data/content";
-import { ABOUT_PAGES } from "../constants/site";
+import { ABOUT, SECTION } from "../data/content";
 import SectionHead from "./SectionHead.astro";
+import AboutNav from "./AboutNav.astro";
 import GalleryMarquee from "./GalleryMarquee.astro";
 ---
 
 <section class="section about" id="about">
   <div class="section__inner">
-    <SectionHead title="ABOUT" index="01" />
+    <SectionHead title={SECTION.about.title} />
 
     <div class="about__intro">
       <h3 class="about__quote">{ABOUT.quote}</h3>
@@ -15,18 +15,7 @@ import GalleryMarquee from "./GalleryMarquee.astro";
       <p class="about__text">{ABOUT.text}</p>
     </div>
 
-    <nav class="about__links" aria-label="ABOUT詳細">
-      {
-        ABOUT_PAGES.map((page) => (
-          <div class="about__item">
-            <a class="ed-button" href={page.href}>
-              {page.label}
-            </a>
-            <p class="about__caption">{page.caption}</p>
-          </div>
-        ))
-      }
-    </nav>
+    <AboutNav />
   </div>
 
   <GalleryMarquee />
@@ -66,33 +55,6 @@ import GalleryMarquee from "./GalleryMarquee.astro";
       font-size: 0.95rem;
       line-height: 2;
       white-space: pre-line;
-    }
-
-    &__links {
-      display: grid;
-      gap: 24px;
-      justify-items: center;
-
-      @include tab {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px 20px;
-        align-items: start;
-      }
-    }
-
-    &__item {
-      display: grid;
-      gap: 12px;
-      justify-items: center;
-      width: 100%;
-    }
-
-    &__caption {
-      color: $c-muted;
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      line-height: 1.7;
-      text-align: center;
     }
   }
 </style>
