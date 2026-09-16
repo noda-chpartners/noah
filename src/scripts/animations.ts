@@ -20,8 +20,8 @@ const playHeroSlideshow = (slides: HTMLElement[]) => {
     return;
   }
 
-  const HOLD = 5.2;
-  const FADE = 2.6;
+  const HOLD = 3;
+  const FADE = 1.6;
   let index = 0;
   let timer: gsap.core.Tween | undefined;
 
