@@ -1,9 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AboutNav from "../components/AboutNav.astro";
 import EdHead from "../components/EdHead.astro";
 import { PAGE_SEO, MESSAGE } from "../data/content";
 import { COMPANY_INFO } from "../constants/site";
+import portrait from "../assets/images/message.png";
 ---
 
 <BaseLayout title={PAGE_SEO.message.title} description={PAGE_SEO.message.description}>
@@ -13,6 +15,15 @@ import { COMPANY_INFO } from "../constants/site";
 
       <article class="message__body page-block">
         <div class="message__meta">
+          <figure class="message__portrait">
+            <Image
+              class="message__image"
+              src={portrait}
+              alt={`${MESSAGE.role} ${COMPANY_INFO.president}`}
+              widths={[280, 400, 560]}
+              sizes="180px"
+            />
+          </figure>
           <p class="message__role">{MESSAGE.role}</p>
           <p class="message__name">{COMPANY_INFO.president}</p>
         </div>
@@ -37,6 +48,16 @@ import { COMPANY_INFO } from "../constants/site";
       }
     }
 
+    &__portrait {
+      width: 140px;
+      margin: 0 0 20px;
+      overflow: hidden;
+
+      @include tab {
+        width: 180px;
+      }
+    }
+
     &__role {
       margin-bottom: 8px;
       color: $c-muted;
@@ -57,5 +78,11 @@ import { COMPANY_INFO } from "../constants/site";
       font-size: 0.95rem;
       line-height: 2;
     }
+  }
+
+  :global(.message__image) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 </style>
