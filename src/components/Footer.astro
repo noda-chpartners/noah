@@ -1,27 +1,18 @@
 ---
-import { Image } from "astro:assets";
-import {
-  SITE_INFO,
-  SITE_ASSETS,
-  NAV_ITEMS,
-  COMPANY_INFO,
-  resolveNavHref,
-} from "../constants/site";
-import SnsList from "./SnsList.astro";
+import { Image } from 'astro:assets';
+import { SITE_INFO, SITE_ASSETS, NAV_ITEMS, ABOUT_PAGES, COMPANY_INFO, resolveNavHref } from '../constants/site';
+import SnsList from './SnsList.astro';
 
 const year = new Date().getFullYear();
 const pathname = Astro.url.pathname;
+const footerNav = [...NAV_ITEMS.slice(0, 1), ...ABOUT_PAGES, ...NAV_ITEMS.slice(1)];
 ---
 
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__top">
       <a class="footer__logo" href="/">
-        <Image
-          class="footer__logo_image image"
-          src={SITE_ASSETS.logo.white}
-          alt={SITE_INFO.title}
-        />
+        <Image class="footer__logo_image image" src={SITE_ASSETS.logo.mark} alt={SITE_INFO.title} />
       </a>
       <button class="footer__totop" type="button" id="footer-totop">
         <span class="footer__totop_line" aria-hidden="true"></span>
@@ -34,7 +25,7 @@ const pathname = Astro.url.pathname;
         <p class="ed-label footer__label">( Menu )</p>
         <ul class="footer__nav">
           {
-            NAV_ITEMS.map((item) => (
+            footerNav.map((item) => (
               <li>
                 <a class="footer__nav_link link" href={resolveNavHref(item.href, pathname)}>
                   {item.label}
@@ -70,21 +61,19 @@ const pathname = Astro.url.pathname;
 </footer>
 
 <script>
-  import lenis from "../scripts/lenis";
+  import lenis from '../scripts/lenis';
 
-  document
-    .getElementById("footer-totop")
-    ?.addEventListener("click", () => lenis.scrollTo(0));
+  document.getElementById('footer-totop')?.addEventListener('click', () => lenis.scrollTo(0));
 </script>
 
 <style lang="scss">
   .footer {
     background-color: $c-base;
     color: $c-white;
-    padding: 72px 6% 32px;
+    padding: 56px 6% 28px;
 
     @include pc {
-      padding: 96px 4% 40px;
+      padding: 72px 4% 32px;
     }
 
     &__inner {
@@ -98,20 +87,23 @@ const pathname = Astro.url.pathname;
       align-items: flex-end;
       justify-content: space-between;
       gap: 24px;
-      margin-bottom: 64px;
-      padding-bottom: 40px;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
       border-bottom: 1px solid $c-line-light;
 
       @include tab {
-        margin-bottom: 88px;
-        padding-bottom: 48px;
+        margin-bottom: 64px;
+        padding-bottom: 40px;
       }
     }
 
     &__logo {
       display: block;
-      width: 200px;
-      max-width: 60vw;
+      width: 52px;
+
+      @include pc {
+        width: 64px;
+      }
     }
 
     &__totop {
@@ -139,12 +131,12 @@ const pathname = Astro.url.pathname;
     &__grid {
       display: grid;
       gap: 48px;
-      margin-bottom: 72px;
+      margin-bottom: 48px;
 
       @include tab {
         grid-template-columns: 1fr 1.3fr 1fr;
         gap: 48px;
-        margin-bottom: 96px;
+        margin-bottom: 64px;
       }
     }
 

@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { PEOPLE } from "../data/content";
 import galleryTeam from "../assets/gallery/gallery03.jpg";
 import galleryWork from "../assets/gallery/gallery04.jpg";
 import galleryCafe from "../assets/gallery/gallery09.jpg";
@@ -8,6 +9,16 @@ import galleryTalk from "../assets/gallery/gallery014.jpg";
 import galleryLounge from "../assets/gallery/gallery010.jpg";
 import gallerySofa from "../assets/gallery/gallery08.jpg";
 import galleryGather from "../assets/gallery/gallery07.jpg";
+import galleryPeace from "../assets/gallery/gallery06.jpg";
+import galleryChat from "../assets/gallery/gallery011.jpg";
+import galleryPortrait from "../assets/gallery/gallery012.jpg";
+
+interface Props {
+  asPage?: boolean;
+}
+
+const { asPage = false } = Astro.props;
+const Heading = asPage ? "h1" : "h2";
 
 const PHOTOS = [
   { src: galleryTeam, alt: "Noahのメンバー", area: "team" },
@@ -18,16 +29,20 @@ const PHOTOS = [
   { src: galleryLounge, alt: "ラウンジでの作業", area: "lounge" },
   { src: gallerySofa, alt: "ソファでの会話", area: "sofa" },
   { src: galleryGather, alt: "社内の食事会", area: "gather" },
+  { src: galleryPortrait, alt: "メンバーのポートレート", area: "portrait" },
+  { src: galleryPeace, alt: "メンバーのひとコマ", area: "peace" },
+  { src: galleryChat, alt: "ソファでの歓談", area: "chat" },
 ];
 ---
 
-<section class="section gallery" id="people">
+<section class:list={["section", "gallery", { page: asPage }]} id="people">
   <div class="section__inner">
     <header class="ed-head">
-      <p class="ed-label">( Atmosphere )</p>
-      <h2 class="ed-title js-shuffle" data-shuffle="view">People</h2>
+      <p class="ed-label">( {PEOPLE.label} )</p>
+      <Heading class="ed-title js-shuffle" data-shuffle="view">{PEOPLE.title}</Heading>
     </header>
-    <p class="gallery__lead">仕事も、余白も、同じ温度で。</p>
+    <p class="gallery__lead">{PEOPLE.lead}</p>
+    {asPage && <p class="gallery__text page-block">{PEOPLE.text}</p>}
 
     <ul class="gallery__grid">
       {
@@ -44,12 +59,15 @@ const PHOTOS = [
         ))
       }
     </ul>
+    <slot />
   </div>
 </section>
 
 <style lang="scss">
   .gallery {
-    border-top: 1px solid $c-line;
+    &:not(.page) {
+      border-top: 1px solid $c-line;
+    }
 
     .ed-head {
       margin-bottom: 20px;
@@ -61,15 +79,31 @@ const PHOTOS = [
 
     &__lead {
       max-width: 20em;
-      margin-bottom: 56px;
+      margin-bottom: 20px;
       font-size: clamp(1.05rem, 1.8vw, 1.25rem);
       font-weight: 300;
       letter-spacing: 0.12em;
       line-height: 1.9;
       color: $c-muted;
+    }
+
+    &__text {
+      max-width: 36em;
+      margin-bottom: 40px;
+      font-size: 0.9rem;
+      line-height: 2.1;
+      color: $c-muted;
 
       @include tab {
-        margin-bottom: 80px;
+        margin-bottom: 56px;
+      }
+    }
+
+    &:not(.page) &__lead {
+      margin-bottom: 40px;
+
+      @include tab {
+        margin-bottom: 56px;
       }
     }
 
@@ -133,6 +167,21 @@ const PHOTOS = [
       &--gather {
         @include tab {
           grid-column: 4 / 7;
+          grid-row: span 2;
+        }
+      }
+
+      &--portrait,
+      &--peace {
+        @include tab {
+          grid-column: span 3;
+          grid-row: span 2;
+        }
+      }
+
+      &--chat {
+        @include tab {
+          grid-column: 1 / 7;
           grid-row: span 2;
         }
       }

@@ -1,5 +1,6 @@
 import logoWhite from '../assets/images/text-logo-white.png';
 import logoBlack from '../assets/images/text-logo-black.png';
+import logoMark from '../assets/images/logo-text-a-white.png.png';
 
 
 export const SITE_INFO = {
@@ -12,6 +13,7 @@ export const SITE_ASSETS = {
   logo: {
     white: logoWhite,
     black: logoBlack,
+    mark: logoMark,
   },
   favicon: "/favicon-black.ico",
   ogp: "/ogp.png",
@@ -23,6 +25,12 @@ export const NAV_ITEMS = [
   { href: "#company", label: "COMPANY"},
   { href: "/recruit", label: "RECRUIT"},
   { href: "/contact", label: "CONTACT" },
+] as const;
+
+export const ABOUT_PAGES = [
+  { href: "/philosophy", label: "PHILOSOPHY", caption: "VISION / MISSION / VALUE" },
+  { href: "/message", label: "MESSAGE", caption: "代表者挨拶" },
+  { href: "/people", label: "PEOPLE", caption: "社員紹介" },
 ] as const;
 
 export const resolveNavHref = (href: string, pathname: string) =>

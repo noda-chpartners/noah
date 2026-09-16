@@ -48,14 +48,14 @@ body.is-nav-open {
 }
 
 .section {
-  padding: 80px 6%;
+  padding: 64px 6%;
 
   @include tab {
-    padding: 120px 5%;
+    padding: 96px 5%;
   }
 
   @include pc {
-    padding: 140px 4%;
+    padding: 112px 4%;
   }
 
   &__inner {
@@ -68,12 +68,12 @@ body.is-nav-open {
     align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 56px;
-    padding-bottom: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 16px;
     border-bottom: 1px solid $c-line;
 
     @include tab {
-      margin-bottom: 80px;
+      margin-bottom: 56px;
     }
   }
 
@@ -85,7 +85,7 @@ body.is-nav-open {
   }
 
   &__title {
-    margin-bottom: 48px;
+    margin-bottom: 36px;
     font-size: clamp(1.35rem, 2.2vw, 1.75rem);
     font-weight: 700;
     letter-spacing: 0.22em;
@@ -93,7 +93,7 @@ body.is-nav-open {
     text-transform: uppercase;
 
     @include tab {
-      margin-bottom: 72px;
+      margin-bottom: 48px;
     }
   }
 
@@ -113,10 +113,10 @@ body.is-nav-open {
 
 // エディトリアル系（SERVICE 以降）
 .ed-head {
-  margin-bottom: 72px;
+  margin-bottom: 48px;
 
   @include tab {
-    margin-bottom: 104px;
+    margin-bottom: 72px;
   }
 }
 
@@ -167,14 +167,14 @@ body.is-nav-open {
 
 .page {
   min-height: 100dvh;
-  padding-top: 120px;
+  padding-top: 96px;
 
   @include tab {
-    padding-top: 160px;
+    padding-top: 120px;
   }
 
   @include pc {
-    padding-top: 180px;
+    padding-top: 136px;
   }
 }
 

@@ -1,66 +1,48 @@
 ---
 import { ABOUT } from "../data/content";
-import { COMPANY_INFO } from "../constants/site";
+import { ABOUT_PAGES } from "../constants/site";
 import SectionHead from "./SectionHead.astro";
-
-const sideItems = [ABOUT.mission, ABOUT.value];
+import GalleryMarquee from "./GalleryMarquee.astro";
 ---
 
 <section class="section about" id="about">
   <div class="section__inner">
     <SectionHead title="ABOUT" index="01" />
 
-    <article class="about__vision">
-      <p class="about__label js-shuffle" data-shuffle="view">{ABOUT.vision.title}</p>
-      <h3 class="about__quote">{ABOUT.vision.subtitle}</h3>
-      <p class="about__lead">{ABOUT.vision.text}</p>
-    </article>
-
-    <div class="about__pair">
-      {
-        sideItems.map((item) => (
-          <article class="about__block">
-            <p class="about__label js-shuffle" data-shuffle="view">
-              {item.title}
-            </p>
-            <h3 class="about__heading">{item.subtitle}</h3>
-            <p class="about__text">{item.text}</p>
-          </article>
-        ))
-      }
+    <div class="about__intro">
+      <h3 class="about__quote">{ABOUT.quote}</h3>
+      <p class="about__lead">{ABOUT.lead}</p>
+      <p class="about__text">{ABOUT.text}</p>
     </div>
 
-    <article class="about__greeting">
-      <div class="about__greeting_meta">
-        <p class="about__label js-shuffle" data-shuffle="view">
-          {ABOUT.greeting.title}
-        </p>
-        <p class="about__role">{ABOUT.greeting.role}</p>
-        <p class="about__name">{COMPANY_INFO.president}</p>
-      </div>
-      <p class="about__greeting_text">{ABOUT.greeting.text}</p>
-    </article>
+    <nav class="about__links" aria-label="ABOUT詳細">
+      {
+        ABOUT_PAGES.map((page) => (
+          <div class="about__item">
+            <a class="ed-button" href={page.href}>
+              {page.label}
+            </a>
+            <p class="about__caption">{page.caption}</p>
+          </div>
+        ))
+      }
+    </nav>
   </div>
+
+  <GalleryMarquee />
 </section>
 
 <style lang="scss">
   .about {
-    &__vision {
-      margin-bottom: 72px;
-      padding-bottom: 72px;
-      border-bottom: 1px solid $c-line;
+    overflow-x: hidden;
+
+    &__intro {
+      max-width: 42em;
+      margin-bottom: 48px;
 
       @include tab {
-        margin-bottom: 96px;
-        padding-bottom: 96px;
+        margin-bottom: 64px;
       }
-    }
-
-    &__label {
-      margin-bottom: 16px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
     }
 
     &__quote {
@@ -73,71 +55,44 @@ const sideItems = [ABOUT.mission, ABOUT.value];
     }
 
     &__lead {
-      max-width: 38em;
+      margin-bottom: 24px;
       color: $c-muted;
       font-size: 0.95rem;
       line-height: 2;
-    }
-
-    &__pair {
-      display: grid;
-      gap: 48px;
-      margin-bottom: 72px;
-
-      @include tab {
-        grid-template-columns: 1fr 1fr;
-        gap: 64px 80px;
-        margin-bottom: 96px;
-      }
-    }
-
-    &__heading {
-      margin-bottom: 16px;
-      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-      font-weight: 700;
-      line-height: 1.7;
-      letter-spacing: 0.06em;
     }
 
     &__text {
       color: $c-muted;
-      font-size: 0.875rem;
-      line-height: 1.9;
+      font-size: 0.95rem;
+      line-height: 2;
+      white-space: pre-line;
     }
 
-    &__greeting {
+    &__links {
       display: grid;
-      gap: 32px;
-      padding-top: 56px;
-      border-top: 1px solid $c-line;
+      gap: 24px;
+      justify-items: center;
 
       @include tab {
-        grid-template-columns: 280px 1fr;
-        gap: 64px;
-        padding-top: 80px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px 20px;
         align-items: start;
       }
     }
 
-    &__role {
-      margin-bottom: 8px;
+    &__item {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      width: 100%;
+    }
+
+    &__caption {
       color: $c-muted;
       font-size: 0.78rem;
-      letter-spacing: 0.12em;
-    }
-
-    &__name {
-      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-      font-weight: 700;
       letter-spacing: 0.08em;
-      line-height: 1.4;
-    }
-
-    &__greeting_text {
-      max-width: 42em;
-      white-space: pre-line;
-      font-size: 0.95rem;
-      line-height: 2;
+      line-height: 1.7;
+      text-align: center;
     }
   }
 </style>

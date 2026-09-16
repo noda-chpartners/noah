@@ -1,0 +1,117 @@
+---
+import { Image } from "astro:assets";
+import eventDinner from "../assets/eventGallery/631309317601755545.jpg";
+import eventBbq from "../assets/eventGallery/631309317735973394.jpg";
+import eventSports from "../assets/eventGallery/631309317752750676.jpg";
+import eventTrip from "../assets/eventGallery/631309318037963299.jpg";
+import galleryTeam from "../assets/gallery/gallery03.jpg";
+import galleryWork from "../assets/gallery/gallery04.jpg";
+
+const PHOTOS = [
+  { src: eventDinner, alt: "懇親会の様子" },
+  { src: galleryTeam, alt: "Noahのメンバー" },
+  { src: eventBbq, alt: "バーベキュー交流" },
+  { src: galleryWork, alt: "打ち合わせの様子" },
+  { src: eventSports, alt: "スポーツ交流" },
+  { src: eventTrip, alt: "合宿のひとコマ" },
+];
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {
+      [0, 1].map((copy) => (
+        <ul class="marquee__list">
+          {PHOTOS.map((photo) => (
+            <li class="marquee__item">
+              <Image
+                class="marquee__image"
+                src={photo.src}
+                alt={copy === 0 ? photo.alt : ""}
+                widths={[320, 480, 720]}
+                sizes="(min-width: 768px) 280px, 220px"
+                loading="lazy"
+              />
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  .marquee {
+    overflow: hidden;
+    margin-top: 48px;
+    margin-inline: -6%;
+
+    @include tab {
+      margin-top: 64px;
+      margin-inline: -5%;
+    }
+
+    @include pc {
+      margin-inline: -4%;
+    }
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: marquee-rtl 28s linear infinite;
+  }
+
+  .marquee__list {
+    display: flex;
+    flex-shrink: 0;
+    gap: 10px;
+    padding-right: 10px;
+    margin: 0;
+    list-style: none;
+  }
+
+  .marquee__item {
+    flex-shrink: 0;
+    width: 220px;
+    height: 150px;
+    overflow: hidden;
+
+    @include tab {
+      width: 260px;
+      height: 176px;
+    }
+
+    @include pc {
+      width: 300px;
+      height: 200px;
+    }
+  }
+
+  :global(.marquee__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @keyframes marquee-rtl {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>

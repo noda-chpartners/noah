@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AboutSubnav from "../components/AboutSubnav.astro";
+import { MESSAGE } from "../data/content";
+import { COMPANY_INFO } from "../constants/site";
+---
+
+<BaseLayout title="代表者挨拶">
+  <section class="section page message">
+    <div class="section__inner">
+      <header class="ed-head">
+        <p class="ed-label">( {MESSAGE.label} )</p>
+        <h1 class="ed-title js-shuffle" data-shuffle="view">{MESSAGE.title}</h1>
+      </header>
+
+      <article class="message__body page-block">
+        <div class="message__meta">
+          <p class="message__role">{MESSAGE.role}</p>
+          <p class="message__name">{COMPANY_INFO.president}</p>
+        </div>
+        <p class="message__text">{MESSAGE.text}</p>
+      </article>
+
+      <AboutSubnav />
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  .message {
+    &__body {
+      display: grid;
+      gap: 32px;
+
+      @include tab {
+        grid-template-columns: 280px 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+    }
+
+    &__role {
+      margin-bottom: 8px;
+      color: $c-muted;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+    }
+
+    &__name {
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+    }
+
+    &__text {
+      max-width: 42em;
+      white-space: pre-line;
+      font-size: 0.95rem;
+      line-height: 2;
+    }
+  }
+</style>

@@ -25,6 +25,7 @@ import { SERVICES } from "../data/content";
               <p class="service__tag">{item.tag}</p>
               <h3 class="service__title">{item.title}</h3>
               <p class="service__text">{item.description}</p>
+              <a class="ed-button" href={`/recruit#${item.id}`}>RECRUIT</a>
             </div>
           </li>
         ))
@@ -39,16 +40,17 @@ import { SERVICES } from "../data/content";
 
     &__list {
       display: grid;
-      gap: 96px;
+      gap: 72px;
 
       @include tab {
-        gap: 140px;
+        gap: 104px;
       }
     }
 
     &__item {
       display: grid;
       gap: 32px;
+      min-width: 0;
 
       @include tab {
         grid-template-columns: 7fr 5fr;
@@ -64,6 +66,10 @@ import { SERVICES } from "../data/content";
             order: 2;
           }
         }
+      }
+
+      &:hover :global(.service__image) {
+        transform: scale(1.03);
       }
     }
 
@@ -97,13 +103,10 @@ import { SERVICES } from "../data/content";
 
     &__text {
       max-width: 26em;
+      margin-bottom: 28px;
       font-size: 0.9rem;
       line-height: 2.1;
       color: rgba($c-base, 0.78);
-    }
-
-    &__item:hover :global(.service__image) {
-      transform: scale(1.03);
     }
   }
 

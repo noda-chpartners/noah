@@ -64,11 +64,11 @@ const rows = [
 
     &__layout {
       display: grid;
-      gap: 56px;
+      gap: 40px;
 
       @include pc {
         grid-template-columns: 5fr 7fr;
-        gap: 80px;
+        gap: 56px;
         align-content: start;
         align-items: start;
       }
@@ -84,13 +84,13 @@ const rows = [
     &__row {
       display: grid;
       gap: 10px;
-      padding: 26px 0;
+      padding: 20px 0;
       border-top: 1px solid $c-line;
 
       @include tab {
         grid-template-columns: 160px 1fr;
         gap: 32px;
-        padding: 30px 0;
+        padding: 24px 0;
       }
 
       &:last-child {

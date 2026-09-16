@@ -4,26 +4,30 @@ import SnsList from "./SnsList.astro";
 ---
 
 <section class="section contact" id="contact">
-  <div class="section__inner">
-    <header class="ed-head contact__head">
-      <p class="ed-label">( Get in touch )</p>
-      <h2 class="ed-title js-shuffle" data-shuffle="view">Contact</h2>
-    </header>
+  <div class="contact__panel">
+    <div class="section__inner">
+      <header class="ed-head contact__head">
+        <p class="ed-label">( Get in touch )</p>
+        <h2 class="ed-title js-shuffle" data-shuffle="view">Contact</h2>
+      </header>
 
-    <div class="contact__body">
-      <p class="contact__label ed-label">( TEL )</p>
-      <a class="contact__tel" href={`tel:${COMPANY_INFO.telLink}`}>
-        {COMPANY_INFO.tel}
-      </a>
-      <p class="contact__note">お気軽にお問い合わせください。</p>
+      <div class="contact__body">
+        <p class="contact__note">お気軽にお問い合わせください。</p>
 
-      <div class="contact__actions">
-        <a class="ed-button" href="/contact">
-          お問い合わせフォーム
-        </a>
-        <a class="ed-textlink" href={`tel:${COMPANY_INFO.telLink}`}>電話で問い合わせる</a>
+        <div class="contact__actions">
+          <a class="ed-button" href="/contact">
+            お問い合わせフォーム
+          </a>
+          <a class="ed-textlink" href={`tel:${COMPANY_INFO.telLink}`}>
+            {COMPANY_INFO.tel}
+          </a>
+        </div>
       </div>
+    </div>
+  </div>
 
+  <div class="contact__rest">
+    <div class="section__inner">
       <div class="contact__meta">
         <div class="contact__meta_col">
           <p class="ed-label">( Address )</p>
@@ -43,14 +47,29 @@ import SnsList from "./SnsList.astro";
 
 <style lang="scss">
   .contact {
-    border-top: 1px solid $c-line;
+    padding: 0;
+    border-top: none;
     text-align: center;
 
-    &__head {
-      margin-bottom: 64px;
+    &__panel {
+      background-color: $c-base;
+      color: $c-white;
+      padding: 64px 6%;
 
       @include tab {
-        margin-bottom: 88px;
+        padding: 96px 5%;
+      }
+
+      @include pc {
+        padding: 112px 4%;
+      }
+    }
+
+    &__head {
+      margin-bottom: 48px;
+
+      @include tab {
+        margin-bottom: 64px;
       }
     }
 
@@ -60,29 +79,12 @@ import SnsList from "./SnsList.astro";
       margin-inline: auto;
     }
 
-    &__label {
-      margin-bottom: 16px;
-    }
-
-    &__tel {
-      display: inline-block;
-      margin-bottom: 20px;
-      font-size: clamp(2rem, 5.2vw, 3.6rem);
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      line-height: 1.1;
-      transition: opacity 0.3s ease;
-
-      &:hover {
-        opacity: 0.55;
-      }
-    }
-
     &__note {
-      margin-bottom: 44px;
-      font-size: 0.88rem;
+      margin-bottom: 40px;
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      font-weight: 300;
       letter-spacing: 0.1em;
-      color: $c-muted;
+      line-height: 1.9;
     }
 
     &__actions {
@@ -90,18 +92,23 @@ import SnsList from "./SnsList.astro";
       flex-direction: column;
       align-items: center;
       gap: 28px;
-      margin-bottom: 80px;
+    }
+
+    &__rest {
+      padding: 48px 6% 64px;
 
       @include tab {
-        margin-bottom: 104px;
+        padding: 64px 5% 96px;
+      }
+
+      @include pc {
+        padding: 72px 4% 112px;
       }
     }
 
     &__meta {
       display: grid;
       gap: 40px;
-      padding-top: 40px;
-      border-top: 1px solid $c-line;
 
       @include tab {
         grid-template-columns: 1fr 1fr;
@@ -120,5 +127,14 @@ import SnsList from "./SnsList.astro";
       letter-spacing: 0.06em;
       line-height: 2;
     }
+  }
+
+  :global(.contact__panel .ed-label) {
+    color: rgba($c-white, 0.55);
+  }
+
+  :global(.contact__panel .ed-button:hover) {
+    background-color: $c-white;
+    color: $c-base;
   }
 </style>

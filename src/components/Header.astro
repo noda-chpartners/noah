@@ -11,12 +11,12 @@ const pathname = Astro.url.pathname;
     <a class="header__logo_link" href="/">
       <Image
         class="header__logo_image header__logo_image--white image"
-        src={SITE_ASSETS.logo.white}
+        src={SITE_ASSETS.logo.mark}
         alt={`${SITE_INFO.title}ロゴ`}
       />
       <Image
         class="header__logo_image header__logo_image--black image"
-        src={SITE_ASSETS.logo.black}
+        src={SITE_ASSETS.logo.mark}
         alt=""
       />
     </a>
@@ -120,13 +120,13 @@ const pathname = Astro.url.pathname;
     }
 
     &__logo {
-      width: 118px;
+      width: 52px;
       flex-shrink: 0;
       position: relative;
       z-index: 2;
 
       @include pc {
-        width: clamp(120px, 10vw, 148px);
+        width: 64px;
       }
     }
 

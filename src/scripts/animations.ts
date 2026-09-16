@@ -7,20 +7,96 @@ lenis.on("scroll", ScrollTrigger.update);
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+let stopHeroSlideshow: (() => void) | undefined;
+
+const playHeroSlideshow = (slides: HTMLElement[]) => {
+  stopHeroSlideshow?.();
+
+  if (slides.length < 2) {
+    gsap.fromTo(
+      slides[0],
+      { scale: 1.06 },
+      { scale: 1, duration: 2.2, ease: "power2.out" },
+    );
+    return;
+  }
+
+  const HOLD = 5.2;
+  const FADE = 2.6;
+  let index = 0;
+  let timer: gsap.core.Tween | undefined;
+
+  slides.forEach((slide, i) => {
+    gsap.set(slide, {
+      opacity: i === 0 ? 1 : 0,
+      scale: 1,
+      zIndex: i === 0 ? 1 : 0,
+    });
+  });
+
+  const kenBurns = (slide: HTMLElement) => {
+    gsap.fromTo(
+      slide,
+      { scale: 1 },
+      {
+        scale: 1.045,
+        duration: HOLD + FADE,
+        ease: "none",
+        overwrite: "none",
+      },
+    );
+  };
+
+  const go = () => {
+    const current = slides[index];
+    const nextIndex = (index + 1) % slides.length;
+    const next = slides[nextIndex];
+
+    gsap.set(next, { opacity: 0, scale: 1, zIndex: 2 });
+    gsap.set(current, { zIndex: 1 });
+    kenBurns(next);
+
+    gsap.to(next, {
+      opacity: 1,
+      duration: FADE,
+      ease: "sine.inOut",
+      overwrite: "auto",
+      onComplete: () => {
+        current.classList.remove("is-active");
+        next.classList.add("is-active");
+        gsap.killTweensOf(current);
+        gsap.set(current, { opacity: 0, scale: 1, zIndex: 0 });
+        schedule();
+      },
+    });
+
+    index = nextIndex;
+  };
+
+  const schedule = () => {
+    timer?.kill();
+    timer = gsap.delayedCall(HOLD, go);
+  };
+
+  kenBurns(slides[0]);
+  schedule();
+
+  stopHeroSlideshow = () => {
+    timer?.kill();
+    gsap.killTweensOf(slides);
+  };
+};
+
 const playHero = () => {
   const hero = document.querySelector(".hero");
   if (!hero) return;
 
-  const image = hero.querySelector(".hero__image");
+  const slides = [...hero.querySelectorAll<HTMLElement>(".hero__image")];
   const catchCopy = hero.querySelector(".hero__catch");
   const subCopy = hero.querySelector(".hero__sub");
 
-  if (image) {
-    gsap.fromTo(
-      image,
-      { scale: 1.06 },
-      { scale: 1, duration: 2.2, ease: "power2.out" },
-    );
+  if (slides.length) {
+    playHeroSlideshow(slides);
   }
 
   if (catchCopy) {
@@ -59,9 +135,9 @@ const reveal = (elements: NodeListOf<Element> | Element[], extra: gsap.TweenVars
 
 const initReveals = () => {
   reveal(document.querySelectorAll(".ed-head"));
-  reveal(document.querySelectorAll(".about__vision, .about__block, .about__greeting"));
-  reveal(document.querySelectorAll(".gallery__lead"));
-  reveal(document.querySelectorAll(".company__layout, .contact__body"));
+  reveal(document.querySelectorAll(".about__intro, .about__item"));
+  reveal(document.querySelectorAll(".gallery__lead, .gallery__text"));
+  reveal(document.querySelectorAll(".company__layout, .contact__body, .contact__meta"));
   reveal(document.querySelectorAll(".page-block, .js-reveal"));
 
   document.querySelectorAll(".gallery__item").forEach((item, index) => {
@@ -141,4 +217,10 @@ if (document.documentElement.classList.contains("is-ready")) {
   boot();
 } else {
   window.addEventListener("noah:ready", boot, { once: true });
+}
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    stopHeroSlideshow?.();
+  });
 }

@@ -2,7 +2,6 @@ import gsap from "gsap";
 import lenis from "./lenis";
 
 const LOADER_KEY = "noah-loader";
-const DURATION = 3.5;
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if ("scrollRestoration" in history) {
@@ -19,6 +18,7 @@ const markReady = () => {
   document.documentElement.classList.remove("is-awaiting-loader");
   document.documentElement.classList.add("is-ready");
   document.getElementById("loader")?.setAttribute("aria-hidden", "true");
+  window.dispatchEvent(new Event("noah:ready"));
   pinTop();
   lenis.start();
 };
@@ -35,7 +35,6 @@ const play = () => {
   const loader = document.getElementById("loader");
   if (!loader) {
     persist();
-    window.dispatchEvent(new Event("noah:ready"));
     markReady();
     return;
   }
@@ -43,54 +42,53 @@ const play = () => {
   pinTop();
   lenis.stop();
 
-  const bg = loader.querySelector(".loader__bg");
-  const title = loader.querySelector(".loader__title");
-  const lead = loader.querySelector(".loader__lead");
+  const count = loader.querySelector<HTMLElement>(".loader__count");
+  const progress = loader.querySelector<HTMLElement>(".loader__progress");
+  const brand = loader.querySelector<HTMLElement>(".loader__brand");
+  const label = loader.querySelector<HTMLElement>(".loader__label");
+  const counter = { val: 0 };
 
   const fallback = window.setTimeout(() => {
     if (!document.documentElement.classList.contains("is-ready")) {
       persist();
-      window.dispatchEvent(new Event("noah:ready"));
       markReady();
     }
-  }, 6000);
+  }, 5000);
 
-  gsap.set([title, lead], { opacity: 0, y: 24 });
+  gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
 
-  const tl = gsap.timeline({
-    defaults: { ease: "power3.out" },
-    onComplete: () => {
-      window.clearTimeout(fallback);
-      persist();
-      markReady();
-    },
-  });
-
-  if (bg) {
-    gsap.fromTo(
-      bg,
-      { scale: 1.08 },
-      { scale: 1, duration: DURATION, ease: "none" },
-    );
-  }
-
-  tl.to(title, { opacity: 1, y: 0, duration: 1.05 }, 0.2)
-    .to(lead, { opacity: 1, y: 0, duration: 0.95 }, 0.85)
-    .add(() => {
-      persist();
-      pinTop();
-      window.dispatchEvent(new Event("noah:ready"));
-    }, 2.45)
+  gsap
+    .timeline({
+      defaults: { ease: "power2.out" },
+      onComplete: () => {
+        window.clearTimeout(fallback);
+        persist();
+        markReady();
+      },
+    })
+    .from(label, { opacity: 0, y: 12, duration: 0.45 }, 0)
+    .from(brand, { opacity: 0, y: 18, duration: 0.65 }, 0.08)
+    .from(count, { opacity: 0, duration: 0.4 }, 0.12)
     .to(
-      loader,
-      { opacity: 0, duration: 1.05, ease: "power2.inOut" },
-      2.45,
-    );
+      counter,
+      {
+        val: 100,
+        duration: 1.35,
+        ease: "power1.inOut",
+        onUpdate: () => {
+          if (count) {
+            count.textContent = String(Math.round(counter.val)).padStart(3, "0");
+          }
+        },
+      },
+      0.2,
+    )
+    .to(progress, { scaleX: 1, duration: 1.35, ease: "power1.inOut" }, 0.2)
+    .to(loader, { yPercent: -100, duration: 0.85, ease: "power3.inOut" }, "+=0.12");
 };
 
 if (reduced) {
   persist();
-  window.dispatchEvent(new Event("noah:ready"));
   markReady();
 } else if (document.documentElement.classList.contains("is-awaiting-loader")) {
   play();
