@@ -137,7 +137,7 @@ const initReveals = () => {
   reveal(document.querySelectorAll(".ed-head"));
   reveal(document.querySelectorAll(".about__intro, .about__item"));
   reveal(document.querySelectorAll(".gallery__lead, .gallery__text"));
-  reveal(document.querySelectorAll(".company__layout, .contact__body, .contact__meta"));
+  reveal(document.querySelectorAll(".company__layout, .contact__body"));
   reveal(document.querySelectorAll(".page-block, .js-reveal"));
 
   document.querySelectorAll(".gallery__item").forEach((item, index) => {

@@ -1,6 +1,5 @@
 ---
 import { COMPANY_INFO } from "../constants/site";
-import SnsList from "./SnsList.astro";
 ---
 
 <section class="section contact" id="contact">
@@ -21,24 +20,6 @@ import SnsList from "./SnsList.astro";
           <a class="ed-textlink" href={`tel:${COMPANY_INFO.telLink}`}>
             {COMPANY_INFO.tel}
           </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="contact__rest">
-    <div class="section__inner">
-      <div class="contact__meta">
-        <div class="contact__meta_col">
-          <p class="ed-label">( Address )</p>
-          <p class="contact__address">
-            {COMPANY_INFO.postalCode}<br />
-            {COMPANY_INFO.address}
-          </p>
-        </div>
-        <div class="contact__meta_col">
-          <p class="ed-label">( SNS )</p>
-          <SnsList />
         </div>
       </div>
     </div>
@@ -92,40 +73,6 @@ import SnsList from "./SnsList.astro";
       flex-direction: column;
       align-items: center;
       gap: 28px;
-    }
-
-    &__rest {
-      padding: 48px 6% 64px;
-
-      @include tab {
-        padding: 64px 5% 96px;
-      }
-
-      @include pc {
-        padding: 72px 4% 112px;
-      }
-    }
-
-    &__meta {
-      display: grid;
-      gap: 40px;
-
-      @include tab {
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-      }
-    }
-
-    &__meta_col {
-      display: grid;
-      justify-items: center;
-      gap: 16px;
-    }
-
-    &__address {
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      line-height: 2;
     }
   }
 
