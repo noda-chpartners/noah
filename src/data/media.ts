@@ -1,5 +1,7 @@
 import type { ImageMetadata } from "astro";
 
+import heroImage from "../assets/images/hero.png";
+
 import galleryTeam from "../assets/gallery/gallery03.jpg";
 import galleryWork from "../assets/gallery/gallery04.jpg";
 import galleryPeace from "../assets/gallery/gallery06.jpg";
@@ -19,6 +21,7 @@ import eventTrip from "../assets/eventGallery/631309318037963299.jpg";
 import eventTogether from "../assets/eventGallery/632021853884121548.jpg";
 
 export const HERO_SLIDES: ImageMetadata[] = [
+  heroImage,
   eventBbq,
   eventTogether,
   eventSports,
