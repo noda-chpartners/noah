@@ -17,13 +17,12 @@ import eventBbq from "../assets/eventGallery/631309317735973394.jpg";
 import eventSports from "../assets/eventGallery/631309317752750676.jpg";
 import eventTrip from "../assets/eventGallery/631309318037963299.jpg";
 import eventTogether from "../assets/eventGallery/632021853884121548.jpg";
-import eventStay from "../assets/eventGallery/632021154306982353.jpg";
 
 export const HERO_SLIDES: ImageMetadata[] = [
   eventBbq,
   eventTogether,
   eventSports,
-  eventStay,
+  eventTrip,
 ];
 
 export const GALLERY_PHOTOS = [
