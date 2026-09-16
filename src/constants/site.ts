@@ -70,8 +70,8 @@ export const COMPANY_INFO = {
   telLink: "+0817066645375",
   telephone: "+81-70-6664-5375",
   business: [
-    { name: "インサイドセールス事業" },
     { name: "WEBマーケティング事業" },
+    { name: "インサイドセールス事業" },
     { name: "動画編集事業" },
     { name: "コンサルティング事業" },
   ],

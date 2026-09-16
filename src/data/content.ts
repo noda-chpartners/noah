@@ -72,18 +72,18 @@ export const PEOPLE = {
 
 export const SERVICES = [
   {
-    id: "inside-sales",
-    title: "インサイドセールス",
-    tag: "SALES",
-    description: "対話を設計し、商談につながる接点をつくる。見込み顧客との関係を、数字と温度感の両方で育てます。",
-    image: insideSales,
-  },
-  {
     id: "web-marketing",
     title: "WEBマーケティング",
     tag: "DIGITAL",
     description: "認知から獲得まで、成果に直結するデジタル施策を設計・実行。見る人の行動が変わる導線をつくります。",
     image: webMarketing,
+  },
+  {
+    id: "inside-sales",
+    title: "インサイドセールス",
+    tag: "SALES",
+    description: "対話を設計し、商談につながる接点をつくる。見込み顧客との関係を、数字と温度感の両方で育てます。",
+    image: insideSales,
   },
   {
     id: "video",
