@@ -26,6 +26,24 @@ const bg = await getImage({
         <p class="recruit__text">{RECRUIT.text}</p>
       </div>
 
+      <section class="recruit__features page-block">
+        <p class="ed-label">( {RECRUIT.features.label} )</p>
+        <h2 class="recruit__features_title" set:html={RECRUIT.features.title.replace("、", "、<wbr>")} />
+        <p class="recruit__features_lead">{RECRUIT.features.lead}</p>
+
+        <ul class="recruit__features_list">
+          {
+            RECRUIT.features.items.map((item) => (
+              <li class="recruit__feature">
+                <p class="recruit__tag">{item.tag}</p>
+                <h3 class="recruit__feature_title">{item.title}</h3>
+                <p class="recruit__feature_text">{item.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
       <ul class="recruit__list">
         {
           RECRUIT.jobs.map((job, index) => (
@@ -104,6 +122,62 @@ const bg = await getImage({
       color: rgba($c-white, 0.72);
       font-size: 0.9rem;
       line-height: 2.1;
+    }
+
+    &__features {
+      margin-bottom: 56px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid $c-line-light;
+
+      @include tab {
+        margin-bottom: 80px;
+        padding-bottom: 64px;
+      }
+    }
+
+    &__features_title {
+      margin: 16px 0 20px;
+      font-size: clamp(1.4rem, 2.6vw, 2rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    &__features_lead {
+      max-width: 32em;
+      margin-bottom: 40px;
+      color: rgba($c-white, 0.72);
+      font-size: 0.9rem;
+      line-height: 2.1;
+
+      @include tab {
+        margin-bottom: 56px;
+      }
+    }
+
+    &__features_list {
+      display: grid;
+      gap: 40px;
+
+      @include tab {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+      }
+    }
+
+    &__feature_title {
+      margin-bottom: 16px;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+    }
+
+    &__feature_text {
+      color: rgba($c-white, 0.78);
+      font-size: 0.875rem;
+      line-height: 2;
     }
 
     &__list {
