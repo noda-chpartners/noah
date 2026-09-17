@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://noah-corp.pages.dev/sitemap-index.xml
+Sitemap: https://noah-official.jp/sitemap-index.xml
