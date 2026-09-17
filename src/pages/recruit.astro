@@ -19,17 +19,20 @@ const bg = await getImage({
     style={`--recruit-image: url("${bg.src}")`}
   >
     <div class="section__inner">
-      <EdHead as="h1" label={RECRUIT.label} title={RECRUIT.title} />
-
-      <div class="recruit__intro page-block">
-        <p class="recruit__lead">{RECRUIT.lead}</p>
-        <p class="recruit__text">{RECRUIT.text}</p>
+      <div class="recruit__band recruit__band--intro page-block">
+        <EdHead as="h1" label={RECRUIT.label} title={RECRUIT.title} />
+        <div class="recruit__intro">
+          <p class="recruit__lead">{RECRUIT.lead}</p>
+          <p class="recruit__text">{RECRUIT.text}</p>
+        </div>
       </div>
 
       <section class="recruit__features page-block">
-        <p class="ed-label">( {RECRUIT.features.label} )</p>
-        <h2 class="recruit__features_title" set:html={RECRUIT.features.title.replace("、", "、<wbr>")} />
-        <p class="recruit__features_lead">{RECRUIT.features.lead}</p>
+        <div class="recruit__band recruit__band--features">
+          <p class="ed-label">( {RECRUIT.features.label} )</p>
+          <h2 class="recruit__features_title" set:html={RECRUIT.features.title.replace("、", "、<wbr>")} />
+          <p class="recruit__features_lead">{RECRUIT.features.lead}</p>
+        </div>
 
         <ul class="recruit__features_list">
           {
@@ -48,21 +51,23 @@ const bg = await getImage({
         {
           RECRUIT.jobs.map((job, index) => (
             <li class="recruit__item page-block" id={job.id}>
-              <p class="ed-label">( {padIndex(index + 1)} )</p>
-              <p class="recruit__tag">{job.tag}</p>
-              <h2 class="recruit__title">{job.title}</h2>
-              <p class="recruit__description">{job.description}</p>
+              <div class="recruit__band recruit__band--job">
+                <p class="ed-label">( {padIndex(index + 1)} )</p>
+                <p class="recruit__tag">{job.tag}</p>
+                <h2 class="recruit__title">{job.title}</h2>
+                <p class="recruit__description">{job.description}</p>
 
-              <dl class="recruit__meta">
-                <div class="recruit__row">
-                  <dt class="ed-label">( 雇用形態 )</dt>
-                  <dd>{job.type}</dd>
-                </div>
-                <div class="recruit__row">
-                  <dt class="ed-label">( 勤務地 )</dt>
-                  <dd>{job.location}</dd>
-                </div>
-              </dl>
+                <dl class="recruit__meta">
+                  <div class="recruit__row">
+                    <dt class="ed-label">( 雇用形態 )</dt>
+                    <dd>{job.type}</dd>
+                  </div>
+                  <div class="recruit__row">
+                    <dt class="ed-label">( 勤務地 )</dt>
+                    <dd>{job.location}</dd>
+                  </div>
+                </dl>
+              </div>
 
               <p class="recruit__cta">
                 <a class="ed-button" href={RECRUIT.applyHref}>応募する</a>
@@ -84,10 +89,13 @@ const bg = await getImage({
 </BaseLayout>
 
 <style lang="scss">
+  // 募集4項目の帯色（Join us / Features の $c-base とは別指定）
+  $c-recruit-job: #222222cb;
+
   .recruit {
     position: relative;
     color: $c-white;
-    background-color: $c-base;
+    background-color: $c-recruit-job;
     background-image:
       linear-gradient(rgba($c-base, 0.58), rgba($c-base, 0.7)),
       var(--recruit-image);
@@ -101,13 +109,35 @@ const bg = await getImage({
       z-index: 1;
     }
 
-    &__intro {
-      max-width: 38em;
+    &__band {
+      width: fit-content;
+      max-width: 100%;
+      padding: 28px 32px;
+      background-color: $c-recruit-job;
+
+      @include tab {
+        padding: 36px 40px;
+      }
+    }
+
+    &__band--intro {
       margin-bottom: 56px;
 
       @include tab {
         margin-bottom: 80px;
       }
+
+      :global(.ed-head) {
+        margin-bottom: 24px;
+
+        @include tab {
+          margin-bottom: 32px;
+        }
+      }
+    }
+
+    &__intro {
+      max-width: 38em;
     }
 
     &__lead {
@@ -135,6 +165,14 @@ const bg = await getImage({
       }
     }
 
+    &__band--features {
+      margin-bottom: 40px;
+
+      @include tab {
+        margin-bottom: 56px;
+      }
+    }
+
     &__features_title {
       margin: 16px 0 20px;
       font-size: clamp(1.4rem, 2.6vw, 2rem);
@@ -146,24 +184,32 @@ const bg = await getImage({
 
     &__features_lead {
       max-width: 32em;
-      margin-bottom: 40px;
       color: rgba($c-white, 0.72);
       font-size: 0.9rem;
       line-height: 2.1;
-
-      @include tab {
-        margin-bottom: 56px;
-      }
     }
 
     &__features_list {
       display: grid;
-      gap: 40px;
+      gap: 24px;
 
       @include tab {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 32px 40px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 28px;
       }
+    }
+
+    &__feature {
+      padding: 24px 28px;
+      background-color: $c-recruit-job;
+
+      @include tab {
+        padding: 28px 32px;
+      }
+    }
+
+    &__feature .recruit__tag {
+      margin-top: 0;
     }
 
     &__feature_title {
@@ -200,6 +246,20 @@ const bg = await getImage({
       }
     }
 
+    &__band--job {
+      width: 100%;
+      margin-bottom: 28px;
+      background-color: $c-recruit-job;
+
+      .recruit__tag {
+        margin-top: 16px;
+      }
+
+      .recruit__description {
+        margin-bottom: 28px;
+      }
+    }
+
     &__tag {
       margin: 20px 0 12px;
       font-size: 0.72rem;
@@ -224,7 +284,7 @@ const bg = await getImage({
     }
 
     &__meta {
-      margin-bottom: 48px;
+      margin-bottom: 0;
     }
 
     &__row {
