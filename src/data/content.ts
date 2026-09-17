@@ -15,7 +15,7 @@ export const SECTION = {
   contact: {
     label: "Get in touch",
     title: "Contact",
-    note: "ご連絡は、下記のLINEまたは電話番号へお願いいたします。",
+    note: "お問い合わせフォーム、LINE、またはお電話にてご連絡ください。",
   },
 } as const;
 
@@ -123,7 +123,7 @@ export const RECRUIT = {
   label: "Join us",
   lead: "一緒に挑戦する仲間を募集しています。",
   text: "会社や環境に人生を決められるのではなく、自分の力で選択肢を増やせる人を増やしたい。その想いに共感し、並走してくれる方を待っています。",
-  applyHref: "/#contact",
+  applyHref: "/contact?type=recruit",
   jobs: SERVICES.map((service) => ({
     id: service.id,
     title: service.title,
@@ -168,6 +168,6 @@ export const PAGE_SEO = {
   contact: {
     title: "お問い合わせ",
     description:
-      "株式会社Noahへのお問い合わせ。サービス相談・採用のご連絡はLINEまたは電話（070-6664-5375）へ。東京都豊島区池袋。",
+      "株式会社Noahへのお問い合わせ。WEBマーケティング、インサイドセールス、採用のご相談はフォーム、LINE、または電話（070-6664-5375）へ。東京都豊島区池袋。",
   },
 } as const;

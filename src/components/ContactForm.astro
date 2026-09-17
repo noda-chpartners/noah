@@ -1,12 +1,13 @@
 ---
 import { CONTACT_TYPES } from "../data/content";
+import { FORMSPREE_ENDPOINT } from "../constants/url";
 ---
 
-<form class="form" id="contact-form" novalidate>
+<form class="form" id="contact-form" action={FORMSPREE_ENDPOINT} method="POST" novalidate>
   <input
     class="form__hp"
     type="text"
-    name="website"
+    name="_gotcha"
     tabindex="-1"
     autocomplete="off"
     aria-hidden="true"
@@ -111,6 +112,8 @@ import { CONTACT_TYPES } from "../data/content";
     ></textarea>
   </div>
 
+  <input type="hidden" name="_subject" id="contact-subject" value="株式会社Noah お問い合わせ" />
+
   <p class="form__error" id="contact-error" role="alert" hidden></p>
 
   <p class="form__cta">
@@ -142,6 +145,15 @@ import { CONTACT_TYPES } from "../data/content";
   ];
 
   const placeholder = "選択してください";
+  const subjectField = document.getElementById("contact-subject") as HTMLInputElement | null;
+  const submitButton = form?.querySelector(".form__submit") as HTMLButtonElement | null;
+
+  const updateSubject = (label: string) => {
+    if (!subjectField) return;
+    subjectField.value = label
+      ? `【株式会社Noah】${label}`
+      : "株式会社Noah お問い合わせ";
+  };
 
   const setType = (value: string) => {
     if (!typeField || !typeValue) return;
@@ -149,11 +161,13 @@ import { CONTACT_TYPES } from "../data/content";
     typeField.dispatchEvent(new Event("change", { bubbles: true }));
 
     const selected = typeOptions.find((option) => option.dataset.value === value);
-    typeValue.textContent = selected?.textContent?.trim() || placeholder;
+    const label = selected?.textContent?.trim() || placeholder;
+    typeValue.textContent = label;
     typeWrap?.classList.toggle("is-filled", Boolean(value));
     typeOptions.forEach((option) => {
       option.setAttribute("aria-selected", String(option.dataset.value === value));
     });
+    if (value) updateSubject(selected?.textContent?.trim() || "");
   };
 
   const closeType = () => {
@@ -237,11 +251,11 @@ import { CONTACT_TYPES } from "../data/content";
     error.textContent = message;
   };
 
-  form?.addEventListener("submit", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form) return;
 
-    const honeypot = form.elements.namedItem("website") as HTMLInputElement | null;
+    const honeypot = form.elements.namedItem("_gotcha") as HTMLInputElement | null;
     if (honeypot?.value) {
       form.hidden = true;
       if (done) done.hidden = false;
@@ -259,8 +273,38 @@ import { CONTACT_TYPES } from "../data/content";
       error.textContent = "";
     }
 
-    form.hidden = true;
-    if (done) done.hidden = false;
+    const endpoint = form.action;
+    if (!endpoint) {
+      showError("送信先が設定されていません。");
+      return;
+    }
+
+    submitButton?.setAttribute("disabled", "true");
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string; errors?: { message?: string }[] }
+          | null;
+        throw new Error(
+          payload?.errors?.[0]?.message ||
+            payload?.error ||
+            "送信に失敗しました。",
+        );
+      }
+
+      form.hidden = true;
+      if (done) done.hidden = false;
+    } catch {
+      showError("送信に失敗しました。時間をおいて再度お試しいただくか、LINE・お電話でご連絡ください。");
+      submitButton?.removeAttribute("disabled");
+    }
   });
 </script>
 
