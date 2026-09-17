@@ -64,7 +64,11 @@ const bg = await getImage({
                   </div>
                   <div class="recruit__row">
                     <dt class="ed-label">( 勤務地 )</dt>
-                    <dd>{job.location}</dd>
+                    <dd class="recruit__location">
+                      {job.location.map((line) => (
+                        <span>{line}</span>
+                      ))}
+                    </dd>
                   </div>
                 </dl>
               </div>
@@ -285,6 +289,12 @@ const bg = await getImage({
 
     &__meta {
       margin-bottom: 0;
+    }
+
+    &__location {
+      display: grid;
+      gap: 6px;
+      line-height: 1.8;
     }
 
     &__row {

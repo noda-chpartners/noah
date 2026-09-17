@@ -104,7 +104,11 @@ export const SERVICES = [
 
 const EMPLOYMENT = {
   type: "正社員 / 業務委託",
-  location: "東京都豊島区（リモート相談可）",
+  location: [
+    "東京都(豊島区、渋谷区、新宿区)",
+    "大阪府 (梅田 難波周辺)",
+    "リモート相談可",
+  ],
 } as const;
 
 const JOB_COPY = {
